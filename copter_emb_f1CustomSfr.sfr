@@ -1,0 +1,61 @@
+[Sfr]
+sfr = "AFIO_EXTICR2",	"Memory",	0x4001000c,	4,	base=16,	modified
+sfr = "EXTI_FTSR",	"Memory",	0x4001040c,	4,	base=16,	modified
+sfr = "DMA_CNDTR3",	"Memory",	0x40020034,	4,	base=16,	modified
+sfr = "DMA_CPAR5",	"Memory",	0x40020060,	4,	base=16,	modified
+sfr = "RTC_CRL",	"Memory",	0x40002804,	2,	base=16,	modified
+sfr = "RTC_PRLH",	"Memory",	0x40002808,	2,	base=16,	modified
+sfr = "RTC_DIVH",	"Memory",	0x40002810,	2,	base=16,	modified
+sfr = "RTC_CNTL",	"Memory",	0x4000281c,	2,	base=16,	modified
+sfr = "WWDG_SR",	"Memory",	0x40002c08,	2,	base=16,	modified
+sfr = "TIM1_CR1",	"Memory",	0x40012c00,	4,	base=16,	modified
+sfr = "TIM1_SMCR",	"Memory",	0x40012c08,	4,	base=16,	modified
+sfr = "TIM2_PSC",	"Memory",	0x40000028,	4,	base=16,	modified
+sfr = "TIM2_ARR",	"Memory",	0x4000002c,	4,	base=16,	modified
+sfr = "TIM2_DCR",	"Memory",	0x40000048,	4,	base=16,	modified
+sfr = "TIM3_CCMR2",	"Memory",	0x4000041c,	4,	base=16,	modified
+sfr = "TIM3_CCER",	"Memory",	0x40000420,	4,	base=16,	modified
+sfr = "TIM3_PSC",	"Memory",	0x40000428,	4,	base=16,	modified
+sfr = "TIM3_CCR2",	"Memory",	0x40000438,	4,	base=16,	modified
+sfr = "TIM3_DCR",	"Memory",	0x40000448,	4,	base=16,	modified
+sfr = "TIM4_CNT",	"Memory",	0x40000824,	4,	base=16,	modified
+sfr = "TIM4_PSC",	"Memory",	0x40000828,	4,	base=16,	modified
+sfr = "TIM4_ARR",	"Memory",	0x4000082c,	4,	base=16,	modified
+sfr = "TIM4_CCR1",	"Memory",	0x40000834,	4,	base=16,	modified
+sfr = "TIM4_CCR2",	"Memory",	0x40000838,	4,	base=16,	modified
+sfr = "TIM4_CCR4",	"Memory",	0x40000840,	4,	base=16,	modified
+sfr = "TIM4_DCR",	"Memory",	0x40000848,	4,	base=16,	modified
+sfr = "TIM4_DMAR",	"Memory",	0x4000084c,	4,	base=16,	modified
+sfr = "TIM15_CR2",	"Memory",	0x40014004,	4,	base=16,	modified
+sfr = "BKP_CR.TPE",	"Memory",	0x40006c30,	2,	base=16,	modified
+sfr = "IWDG_RLR.RL",	"Memory",	0x40003008,	2,	base=16,	modified
+sfr = "IWDG_SR",	"Memory",	0x4000300c,	2,	base=16,	modified
+sfr = "WWDG_CR",	"Memory",	0x40002c00,	2,	base=16,	modified
+sfr = "WWDG_CR.T",	"Memory",	0x40002c00,	2,	base=16,	modified
+sfr = "TIM1_SMCR.ECE",	"Memory",	0x40012c08,	4,	base=16,	modified
+sfr = "TIM1_SMCR.ETP",	"Memory",	0x40012c08,	4,	base=16,	modified
+sfr = "TIM1_DIER.CC4IE",	"Memory",	0x40012c0c,	4,	base=16,	modified
+sfr = "TIM1_DIER.BIE",	"Memory",	0x40012c0c,	4,	base=16,	modified
+sfr = "TIM1_DIER.UDE",	"Memory",	0x40012c0c,	4,	base=16,	modified
+sfr = "TIM1_DIER.CC4DE",	"Memory",	0x40012c0c,	4,	base=16,	modified
+sfr = "TIM1_SR.UIF",	"Memory",	0x40012c10,	4,	base=16,	modified
+sfr = "TIM1_SR.CC2IF",	"Memory",	0x40012c10,	4,	base=16,	modified
+sfr = "TIM1_SR.TIF",	"Memory",	0x40012c10,	4,	base=16,	modified
+sfr = "TIM1_SR.CC1OF",	"Memory",	0x40012c10,	4,	base=16,	modified
+sfr = "TIM1_SR.CC4OF",	"Memory",	0x40012c10,	4,	base=16,	modified
+sfr = "TIM1_EGR",	"Memory",	0x40012c14,	4,	base=16,	modified
+sfr = "TIM1_EGR.CC4G",	"Memory",	0x40012c14,	4,	base=16,	modified
+sfr = "TIM1_EGR.TG",	"Memory",	0x40012c14,	4,	base=16,	modified
+sfr = "TIM1_EGR.BG",	"Memory",	0x40012c14,	4,	base=16,	modified
+sfr = "TIM1_CCMR1",	"Memory",	0x40012c18,	4,	base=16,	modified
+sfr = "TIM1_CCMR1.IC1PSC",	"Memory",	0x40012c18,	4,	base=16,	modified
+sfr = "TIM1_CCMR1.IC2S",	"Memory",	0x40012c18,	4,	base=16,	modified
+sfr = "TIM1_OCMR1.OC1FE",	"Memory",	0x40012c18,	4,	base=16,	modified
+
+
+[SfrGroupInfo]
+group = "Custom", "AFIO_EXTICR2", "EXTI_FTSR", "DMA_CNDTR3"
+group = "Custom", "DMA_CPAR5", "RTC_CRL"
+group = "Custom", "RTC_PRLH", "RTC_DIVH", "RTC_CNTL", "WWDG_SR", "TIM1_CR1", "TIM1_SMCR", "TIM2_PSC", "TIM2_ARR", "TIM2_DCR", "TIM3_CCMR2", "TIM3_CCER", "TIM3_PSC", "TIM3_CCR2", "TIM3_DCR", "TIM4_CNT", "TIM4_PSC", "TIM4_ARR", "TIM4_CCR1"
+group = "Custom", "TIM4_CCR2", "TIM4_CCR4", "TIM4_DCR", "TIM4_DMAR"
+group = "Custom", "TIM15_CR2"
