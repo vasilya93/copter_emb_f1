@@ -6,7 +6,6 @@
 #include "string.h"
 #include "USART.h"
 #include "Buffer.h"
-#include "assert.h"
 
 Serial_Type Serial;
 
@@ -17,22 +16,22 @@ void TC_Handler(void);
 void TXE_Handler(void);
 void RXNE_Handler(uint8_t symbol);
 
-void Serial_Begin(unsigned int speed)
+void Serial_Begin(unsigned int baudrate)
 {
   //init buffers and attach events
   SerialInit();
     
   //configure registers
-  USART_Begin(speed);
+  USART_Begin(baudrate);
 }
 
-void Serial_BeginConfigured(unsigned int speed, uint8_t conf)
+void Serial_BeginConfigured(unsigned int baudrate, uint8_t conf)
 {
   //init buffers and attach events
   SerialInit();
     
   //configure registers
-  USART_BeginConfigured(speed, conf);
+  USART_BeginConfigured(baudrate, conf);
 }
 
 void Serial_End()

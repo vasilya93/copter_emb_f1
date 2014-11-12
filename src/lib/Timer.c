@@ -38,14 +38,14 @@ void Timer_init(uint8_t timer)
 //doesn't consider the freq of APB1, but should
 bool Timer_start(uint8_t timer, void (*handler)(), uint32_t useconds, bool do_repeat)
 {
-	timer_t *timer_ref;
-	TIM_TypeDef *timer_settings;
-	
-	if (!useconds)
-		return false;
-	
-	if (useconds > TIMER_USECONDS_MAX)
-		return false;
+  timer_t *timer_ref;
+  TIM_TypeDef *timer_settings;
+  
+  if (!useconds)
+          return false;
+  
+  if (useconds > TIMER_USECONDS_MAX)
+          return false;
 	
   switch(timer) {
   case TIMER6:
@@ -69,13 +69,13 @@ bool Timer_start(uint8_t timer, void (*handler)(), uint32_t useconds, bool do_re
 	timer_ref->handler = handler;
 	
 	if (useconds <= 1000) {
-		timer_settings->PSC = (8 * useconds) - 1;
+		timer_settings->PSC = (16 * useconds) - 1;
 		timer_settings->ARR = 1;
 	} else if (useconds <= 10000) {
-		timer_settings->PSC = 800 - 1;
+		timer_settings->PSC = 1600 - 1;
 		timer_settings->ARR = useconds / 100;
 	} else {
-		timer_settings->PSC = 8000 - 1;
+		timer_settings->PSC = 16000 - 1;
 		timer_settings->ARR = useconds / 1000;
 	}
 	

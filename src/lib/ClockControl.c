@@ -19,7 +19,7 @@ void ClockControl_Initialize()
 
   RCC->CFGR &= ~RCC_CFGR_PLLSRC; //HSI
   RCC->CFGR &= ~RCC_CFGR_PLLMULL;
-  RCC->CFGR |= RCC_CFGR_PLLMULL_1; //multiply by 4
+  RCC->CFGR |= RCC_CFGR_PLLMULL_1 | RCC_CFGR_PLLMULL_2; //multiply by 8
   RCC->CFGR &= ~RCC_CFGR_HPRE; //no division
   RCC->CFGR &= ~RCC_CFGR_PPRE1;
   RCC->CFGR |= RCC_CFGR_PPRE1_0 | RCC_CFGR_PPRE1_2; //devide by 4

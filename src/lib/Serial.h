@@ -50,9 +50,9 @@ typedef struct Serial_Type
   int VRH_Amount;
 }Serial_Type;
 
-void Serial_Begin(unsigned int speed);
+void Serial_Begin(unsigned int baudrate);
 
-void Serial_BeginConfigured(unsigned int speed, uint8_t conf);
+void Serial_BeginConfigured(unsigned int baudrate, uint8_t conf);
 
 void Serial_End(void);
 

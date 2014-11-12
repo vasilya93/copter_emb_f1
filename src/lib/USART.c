@@ -238,7 +238,7 @@ void USART_DisableInterrupts(uint8_t interrupts)
 
 void USART3_IRQHandler(void)
 {
-	unsigned int i;
+  unsigned int i;
   if((USART3->SR & USART_SR_TXE) && (USART3->CR1 & USART_CR1_TXEIE))
   {
     //cleared by a write to DR
@@ -274,12 +274,12 @@ void USART3_IRQHandler(void)
 
 //-------------------------Hidden funtions--------------------------------------
 
-void USART_SetupBasic(unsigned int speed)
+void USART_SetupBasic(unsigned int baudrate)
 {
-	float Fraction;
-	float USARTDIV;
-	unsigned int DivMantissa;
-	unsigned int DivFraction;
+  float Fraction;
+  float USARTDIV;
+  unsigned int DivMantissa;
+  unsigned int DivFraction;
 	
   NVIC_EnableIRQ(USART3_IRQn);
   
@@ -298,10 +298,9 @@ void USART_SetupBasic(unsigned int speed)
                  GPIO_CRH_CNF11);
   GPIOB->CRH |= (GPIO_CRH_MODE10_1 |
                  GPIO_CRH_CNF10_1 |
-                 GPIO_CRH_MODE11_1 |
-                 GPIO_CRH_CNF11_1);
+                 GPIO_CRH_CNF11_0);
 
-  //enabling GPIOC clocking, USART clocking
+  //USART clocking
   RCC->APB1ENR |= RCC_APB1ENR_USART3EN; 
   
   //configuring USART
@@ -309,7 +308,7 @@ void USART_SetupBasic(unsigned int speed)
   USART3->CR1 |= USART_CR1_UE | USART_CR1_RXNEIE | USART_CR1_TCIE;
   
   //calculating Baudrate Register value
-  USARTDIV = (float)ClockControl.APB1_Frequency / (float)(16 * speed);
+  USARTDIV = (float)ClockControl.APB1_Frequency / (float)(16 * baudrate);
   DivMantissa = (int)USARTDIV;
   while(DivMantissa < 1); //caution in case fck is too low or baudrate is too big
   
