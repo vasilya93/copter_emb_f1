@@ -48,14 +48,15 @@ void Wire_InitDevices(void)
 		return;
 	
   Wire.CurrentDevice = 0;
-	while(Wire.CurrentDevice < Wire.DevicesNum) {
-		data = Wire.Devices[Wire.CurrentDevice]->GetNextInitOperation(I2C_DD_NODATA, &opDescript);		
-		if(opDescript.DataDescript != WIRE_DD_NODATA) {			
-			I2C_StartOperation(opDescript, data);
-			break;
-		}
-		Wire.CurrentDevice++;
-	}
+  while(Wire.CurrentDevice < Wire.DevicesNum) {
+    data = Wire.Devices[Wire.CurrentDevice]->GetNextInitOperation(I2C_DD_NODATA,
+                                                                  &opDescript);		
+    if(opDescript.DataDescript != WIRE_DD_NODATA) {			
+      I2C_StartOperation(opDescript, data);
+      break;
+    }
+    Wire.CurrentDevice++;
+  }
 }
 
 void Wire_BeginCycle(void)
@@ -69,11 +70,11 @@ void Wire_BeginCycle(void)
   Wire.CurrentDevice = 0;
   while(Wire.CurrentDevice < Wire.DevicesNum) {
     data = Wire.Devices[Wire.CurrentDevice]->GetNextRegOperation(I2C_DD_NODATA, &opDescript);		
-      if(opDescript.DataDescript != WIRE_DD_NODATA) {
-        I2C_StartOperation(opDescript, data);
-	break;		
-      }
-      Wire.CurrentDevice++;
+    if(opDescript.DataDescript != WIRE_DD_NODATA) {
+      I2C_StartOperation(opDescript, data);
+      break;		
+    }
+    Wire.CurrentDevice++;
   }
 }
 

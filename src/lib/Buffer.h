@@ -1,4 +1,4 @@
-#include "stdint.h" //define custom types like uint8_t, uint16_t 
+#include "stdint.h"
 
 #ifndef BUFFER_H
 #define BUFFER_H

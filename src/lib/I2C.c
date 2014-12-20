@@ -4,6 +4,11 @@
 #include "Messenger.h"
 
 I2C_Operation_Type I2C_Operation;
+uint16_t addr_counter = 0;
+uint16_t sb_counter = 0;
+uint16_t txe_counter = 0;
+uint16_t rxne_counter = 0;
+uint16_t tot_counter = 0;
 
 void I2C_SendAddress(void);
 void I2C_OperateTransmitter(void);
@@ -27,8 +32,8 @@ void I2C_Begin(void)
                   GPIO_CRL_MODE7);
   GPIOB->CRL |= (GPIO_CRL_MODE6_0 |
                  GPIO_CRL_CNF6 |
-                 GPIO_CRL_MODE7_0 |
-                 GPIO_CRL_CNF7);
+                   GPIO_CRL_MODE7_0 |
+                     GPIO_CRL_CNF7);
   //GPIOB->MODER |=  /*I2C1*/ GPIO_MODER_MODER6_1 | GPIO_MODER_MODER7_1;
   //GPIOB->OTYPER |= /*I2C1*/ GPIO_OTYPER_OT_6 | GPIO_OTYPER_OT_7; //open drain
   //GPIOB->OSPEEDR |= /*I2C1*/ GPIO_OSPEEDER_OSPEEDR6 | GPIO_OSPEEDER_OSPEEDR7;
@@ -36,6 +41,8 @@ void I2C_Begin(void)
   //GPIOB->AFR[0] |= (0x4 << 24) | (0x4 << 28);
   
   RCC->APB1ENR |= RCC_APB1ENR_I2C1EN;
+  RCC->APB1RSTR |= RCC_APB1RSTR_I2C1RST;
+  RCC->APB1RSTR &= ~RCC_APB1RSTR_I2C1RST;
   
   I2C1->CR2 |= I2C_CR2_ITBUFEN | I2C_CR2_ITEVTEN | I2C_CR2_ITERREN | I2C_CR2_FREQ_3 /*changes if PCLK1 changes*/;
   I2C1->CCR |= 40; /*changes if PCLK1 changes*/
@@ -45,8 +52,8 @@ void I2C_Begin(void)
 
 bool I2C_OperationComplete_Attach(void (*handler)(void* operation))
 {
-	void (**newPointer)(void* operation);
-	
+  void (**newPointer)(void* operation);
+  
   if(handler == NULL)
   {
     return false;
@@ -70,7 +77,7 @@ bool I2C_OperationComplete_Attach(void (*handler)(void* operation))
 bool I2C_StartOperation(I2C_OpDescript_Type description, uint8_t* bytes)
 {
   unsigned int i;
-	
+  
   if((description.BytesNum > I2C_DATA_SIZE) || (I2C_Operation.State & I2C_ST_BUSY)) {
     Messenger_SendByte(I2C_MSG_STRTFL); 
     free(bytes);
@@ -88,10 +95,12 @@ bool I2C_StartOperation(I2C_OpDescript_Type description, uint8_t* bytes)
   
   I2C1->CR1 |= I2C_CR1_ACK;
   
-  while(I2C1->SR2 & I2C_SR2_BUSY);
+  while(I2C1->SR2 & I2C_SR2_BUSY) {
+    asm("NOP");
+  }
   
   I2C1->CR1 |= I2C_CR1_START;
-  //Messenger_SendByte(I2C_MSG_STRTST); 
+  Messenger_SendByte(I2C_MSG_STRTST); 
   
   return true;
 }
@@ -108,33 +117,40 @@ void I2C_SetOpDescription(I2C_OpDescript_Type* descript, uint16_t dataDescript,
 void I2C1_EV_IRQHandler(void)
 {
   if(I2C1->SR1 & I2C_SR1_SB) {
+    sb_counter++;
     I2C_SendAddress();
-		return;
+    return;
   }
-
+  
   if(I2C1->SR1 & I2C_SR1_ADDR) {
+    addr_counter++;
     if (I2C_Operation.Description.IsRead &&
-			  I2C_Operation.Description.BytesNum == 1) {
-      I2C1->CR1 &= ~I2C_CR1_ACK; //This should be done during event6, before addr is cleared
-      //Messenger_SendByte(I2C_MSG_NACKST);
-    }
+        I2C_Operation.Description.BytesNum == 1) {
+          I2C1->CR1 &= ~I2C_CR1_ACK; //This should be done during event6, before addr is cleared
+          //Messenger_SendByte(I2C_MSG_NACKST);
+        }
     if(I2C1->SR2 & I2C_SR2_TRA) {
       I2C_OperateTransmitter();
     } else {
       I2C_OperateReceiver();
     }
-		return;
+    return;
   }
-
+  
   if(I2C1->SR1 & I2C_SR1_TXE) {
-    I2C_TransmitRegisterEmpty();
-		return;
+    txe_counter++;
+    I2C_TransmitRegisterEmpty(); //it happens that new start is set from the interrupt handler
+    //not very good. it's better to give to a main thread idea, that it should start the operation;
+    return;
   }
-
+  
   if(I2C1->SR1 & I2C_SR1_RXNE) {
+    rxne_counter++;
     I2C_ReceiveRegisterNotEmpty();
-		return;
+    return;
   }
+  
+  tot_counter++;
 }
 
 void I2C1_ER_IRQHandler(void)
@@ -149,7 +165,7 @@ void I2C1_ER_IRQHandler(void)
     I2C1->CR1 |= I2C_CR1_ACK;  
     while(I2C1->SR2 & I2C_SR2_BUSY);  
     I2C1->CR1 |= I2C_CR1_START;
-
+    
     //I2C_SetStart(false);
   } else {
     Messenger_SendByte(I2C_MSG_ERR);
@@ -161,7 +177,7 @@ void I2C1_ER_IRQHandler(void)
 void I2C_SendAddress()
 {
   I2C1->DR = (I2C_Operation.Description.DeviceAddress << 1) |
-	           (I2C_Operation.Description.IsRead ? 1 : 0);
+    (I2C_Operation.Description.IsRead ? 1 : 0);
   //Messenger_SendByte(I2C_MSG_ADSND);
 }
 
@@ -182,7 +198,7 @@ void I2C_OperateReceiver()
 
 void I2C_TransmitRegisterEmpty()
 {
-	unsigned int i;
+  unsigned int i;
   if(I2C_Operation.CurrentByte++ < I2C_Operation.Description.BytesNum) {
     I2C1->DR = I2C_Operation.Bytes[I2C_Operation.CurrentByte];
     //Messenger_SendByte(I2C_MSG_TXE);
@@ -190,7 +206,7 @@ void I2C_TransmitRegisterEmpty()
     I2C1->CR1 |= I2C_CR1_STOP;
     //Messenger_SendByte(I2C_MSG_TRSCPL);
     I2C_Operation.State &= ~I2C_ST_BUSY; //danger
-
+    
     for(i = 0; i < I2C_Operation.OCH_Amount; i++) {
       (*I2C_Operation.OperationCompleteHandlers[i])(&I2C_Operation);
     }
@@ -201,7 +217,7 @@ void I2C_ReceiveRegisterNotEmpty()
 {
   uint8_t bytesLeft;
   unsigned int i;
-
+  
   I2C_Operation.CurrentByte++;
   I2C_Operation.Bytes[I2C_Operation.CurrentByte - 1] = I2C1->DR;
   bytesLeft = I2C_Operation.Description.BytesNum - I2C_Operation.CurrentByte;

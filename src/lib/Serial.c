@@ -20,7 +20,7 @@ void Serial_Begin(unsigned int baudrate)
 {
   //init buffers and attach events
   SerialInit();
-    
+
   //configure registers
   USART_Begin(baudrate);
 }

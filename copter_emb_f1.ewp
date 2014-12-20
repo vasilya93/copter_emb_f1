@@ -320,7 +320,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -329,7 +329,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CompilerMisraRules98</name>
@@ -1866,6 +1866,57 @@
         <name>$PROJ_DIR$\src\lib\ClockControl.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\src\lib\fifo.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\fifo.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\HMC5883.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\HMC5883.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\I2C.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\I2C.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\linmath.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\Messenger.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\Messenger.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\MPU6050.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\MPU6050.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\PWM.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\PWM.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\sensors_fusion.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\sensors_fusion.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\Serial.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\Serial.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\src\lib\Timer.c</name>
       </file>
       <file>
@@ -1876,6 +1927,12 @@
       </file>
       <file>
         <name>$PROJ_DIR$\src\lib\USART.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\Wire.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\Wire.h</name>
       </file>
     </group>
     <group>

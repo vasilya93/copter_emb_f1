@@ -2,112 +2,162 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>4009474595</fileChecksum>
+  <fileChecksum>2568306715</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
-      <file>$PROJ_DIR$\Debug\Exe\c.out</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-      <file>$PROJ_DIR$\src\source\&lt;invalid loc&gt;</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
-      <file>$PROJ_DIR$\stm32f10x_flash.icf</file>
-      <file>$PROJ_DIR$\src\source\core_cm3.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\src\CMSIS\system_stm32f10x.c</file>
-      <file>$PROJ_DIR$\src\CMSIS\system_stm32f10x.h</file>
-      <file>$PROJ_DIR$\src\CMSIS\stm32f10x.h</file>
-      <file>$PROJ_DIR$\src\startup\startup_stm32f10x_ld_vl.s</file>
-      <file>$PROJ_DIR$\src\main.c</file>
-      <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
-      <file>$PROJ_DIR$\src\lib\Timer.c</file>
       <file>$PROJ_DIR$\src\lib\USART.c</file>
-      <file>$PROJ_DIR$\src\lib\ClockControl.h</file>
-      <file>$PROJ_DIR$\src\lib\Serial.c</file>
-      <file>$PROJ_DIR$\src\lib\Buffer.c</file>
-      <file>$PROJ_DIR$\src\lib\Buffer.h</file>
       <file>$PROJ_DIR$\src\lib\Serial.h</file>
+      <file>$PROJ_DIR$\src\lib\Serial.c</file>
+      <file>$PROJ_DIR$\src\CMSIS\stm32f10x.h</file>
+      <file>$PROJ_DIR$\src\CMSIS\system_stm32f10x.h</file>
+      <file>$PROJ_DIR$\src\CMSIS\system_stm32f10x.c</file>
+      <file>$PROJ_DIR$\src\lib\fifo.c</file>
+      <file>$PROJ_DIR$\src\lib\ClockControl.h</file>
+      <file>$PROJ_DIR$\src\lib\Buffer.h</file>
       <file>$PROJ_DIR$\src\lib\ClockControl.c</file>
-      <file>$PROJ_DIR$\src\lib\Timer.h</file>
-      <file>$PROJ_DIR$\src\lib\USART.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\Buffer.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\system_stm32f10x.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\copter_emb_f1.pbd</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\core_cm3.pbi</file>
-      <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
+      <file>$PROJ_DIR$\src\lib\Wire.h</file>
       <file>$PROJ_DIR$\src\startup\startup_stm32f10x_md_vl.s</file>
-      <file>$PROJ_DIR$\Debug\Obj\Buffer.o</file>
-      <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
-      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
-      <file>$PROJ_DIR$\src\&lt;invalid loc&gt;</file>
-      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-      <file>$PROJ_DIR$\src\source\system_stm32f10x.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\startup_stm32f10x_ld_vl.o</file>
-      <file>$TOOLKIT_DIR$\CMSIS\Include\core_cmInstr.h</file>
-      <file>$TOOLKIT_DIR$\CMSIS\Include\core_cm3.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
-      <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
-      <file>$TOOLKIT_DIR$\CMSIS\Include\core_cmFunc.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\Timer.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\USART.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\stddef.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\Serial.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\ClockControl.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\Timer.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\core_cm3.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\system_stm32f10x.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\USART.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\startup_stm32f10x_md_vl.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-      <file>$PROJ_DIR$\src\lib\&lt;invalid loc&gt;</file>
-      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\math.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ymath.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
+      <file>$PROJ_DIR$\src\lib\I2C.h</file>
+      <file>$PROJ_DIR$\src\lib\Messenger.c</file>
+      <file>$PROJ_DIR$\src\lib\linmath.h</file>
+      <file>$PROJ_DIR$\src\lib\HMC5883.c</file>
+      <file>$PROJ_DIR$\src\lib\fifo.h</file>
+      <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
       <file>$TOOLKIT_DIR$\inc\c\ystdio.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\assert.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\xtgmath.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\Serial.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+      <file>$PROJ_DIR$\src\&lt;invalid loc&gt;</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+      <file>$TOOLKIT_DIR$\CMSIS\Include\core_cmFunc.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ymath.h</file>
+      <file>$PROJ_DIR$\src\startup\startup_stm32f10x_ld_vl.s</file>
+      <file>$PROJ_DIR$\Debug\Obj\ClockControl.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\sensors_fusion.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\Buffer.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\storage.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\Wire.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\USART.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\MPU6050.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\fifo.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\fifo.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\math.h</file>
+      <file>$PROJ_DIR$\stm32f10x_flash.icf</file>
+      <file>$PROJ_DIR$\src\lib\PWM.h</file>
+      <file>$PROJ_DIR$\src\lib\sensors_fusion.c</file>
+      <file>$PROJ_DIR$\src\lib\PWM.c</file>
+      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\startup_stm32f10x_ld_vl.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
+      <file>$PROJ_DIR$\src\source\system_stm32f10x.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\I2C.pbi</file>
+      <file>$PROJ_DIR$\src\source\core_cm3.c</file>
       <file>$PROJ_DIR$\Debug\Obj\ClockControl.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\Timer.o</file>
+      <file>$PROJ_DIR$\src\source\&lt;invalid loc&gt;</file>
+      <file>$PROJ_DIR$\Debug\Obj\Timer.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\core_cm3.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\copter_emb_f1.pbd</file>
+      <file>$PROJ_DIR$\Debug\Obj\Wire.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\Messenger.pbi</file>
+      <file>$TOOLKIT_DIR$\CMSIS\Include\core_cm3.h</file>
+      <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
+      <file>$PROJ_DIR$\Debug\Obj\HMC5883.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\startup_stm32f10x_md_vl.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\MPU6050.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\Serial.o</file>
+      <file>$PROJ_DIR$\src\lib\Messenger.h</file>
+      <file>$PROJ_DIR$\src\lib\I2C.c</file>
+      <file>$PROJ_DIR$\src\lib\HMC5883.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\I2C.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\xtgmath.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\core_cm3.o</file>
+      <file>$PROJ_DIR$\Debug\Exe\c.out</file>
+      <file>$PROJ_DIR$\Debug\Obj\Messenger.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\Buffer.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\USART.pbi</file>
+      <file>$TOOLKIT_DIR$\CMSIS\Include\core_cmInstr.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\PWM.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\system_stm32f10x.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\storage.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\sensors_fusion.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\Serial.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\stddef.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\system_stm32f10x.pbi</file>
+      <file>$PROJ_DIR$\src\lib\MPU6050.c</file>
+      <file>$PROJ_DIR$\src\lib\sensors_fusion.h</file>
+      <file>$PROJ_DIR$\src\lib\MPU6050.h</file>
+      <file>$PROJ_DIR$\src\lib\Buffer.c</file>
+      <file>$PROJ_DIR$\src\lib\USART.h</file>
+      <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
+      <file>$PROJ_DIR$\src\lib\Wire.c</file>
+      <file>$PROJ_DIR$\src\main.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\HMC5883.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\PWM.o</file>
+      <file>$PROJ_DIR$\src\lib\&lt;invalid loc&gt;</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\src\lib\Timer.c</file>
+      <file>$PROJ_DIR$\src\lib\Timer.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
+      <file>$PROJ_DIR$\src\lib\storage.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.o</file>
+      <file>$PROJ_DIR$\src\lib\storage.h</file>
     </outputs>
     <file>
-      <name>$PROJ_DIR$\Debug\Exe\c.out</name>
-      <inputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 8 35 71 53 56 10 57 55 36 46 17 33</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\src\source\core_cm3.c</name>
+      <name>$PROJ_DIR$\src\lib\USART.c</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 32</file>
+          <name>ICCARM</name>
+          <file> 30</file>
         </tool>
         <tool>
-          <name>ICCARM</name>
-          <file> 54</file>
+          <name>BICOMP</name>
+          <file> 75</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 4 39 2 40 6 5 37 1</file>
+          <name>ICCARM</name>
+          <file> 34 19 23 77 69 42 57 39 101 70 86 40 62 3 54 83 76 87 59 22 4 93 67 7</file>
         </tool>
         <tool>
+          <name>BICOMP</name>
+          <file> 34 19 23 77 69 42 57 39 101 70 86 40 62 100 93 67 83 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\lib\Serial.c</name>
+      <outputs>
+        <tool>
           <name>ICCARM</name>
-          <file> 4 39 2 40 6 5 37 1</file>
+          <file> 63</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 85</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1 83 19 77 69 42 57 39 101 67 8 62 40 78 18 61 21 93</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 1 83 19 77 69 42 57 39 101 67 8 62 40 78 18 61 21 93</file>
         </tool>
       </inputs>
     </file>
@@ -115,22 +165,123 @@
       <name>$PROJ_DIR$\src\CMSIS\system_stm32f10x.c</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 29</file>
+          <name>ICCARM</name>
+          <file> 81</file>
         </tool>
         <tool>
-          <name>ICCARM</name>
-          <file> 55</file>
+          <name>BICOMP</name>
+          <file> 88</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 14 44 4 39 2 40 6 5 37 1 43 45 7 47 13</file>
+          <name>ICCARM</name>
+          <file> 3 54 83 19 77 69 42 57 39 101 76 87 59 22 4</file>
         </tool>
         <tool>
+          <name>BICOMP</name>
+          <file> 3 54 83 19 77 69 42 57 39 101 76 87 59 22 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\lib\fifo.c</name>
+      <outputs>
+        <tool>
           <name>ICCARM</name>
-          <file> 14 44 4 39 2 40 6 5 37 1 43 45 7 47 13</file>
+          <file> 33</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 62 19 77 69 42 57 39 101 40 61 21 16 83</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 62 19 77 69 42 57 39 101 40 61 21 16 83</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\lib\ClockControl.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 46</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 54 83 19 77 69 42 57 39 101 76 87 59 22 4 7</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 100 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\startup\startup_stm32f10x_md_vl.s</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 58</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\lib\Messenger.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 73</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 53</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 83 19 77 69 42 57 39 101 61 40 21 16 64 1 67 8 36 62</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 83 19 77 69 42 57 39 101 61 40 21 16 64 1 67 8 36 62</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\lib\HMC5883.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 56</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 97</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 66 10 83 19 77 69 42 57 39 101 67 12 64 1 8 62 40</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 66 10 83 19 77 69 42 57 39 101 67 12 64 1 8 62 40</file>
         </tool>
       </inputs>
     </file>
@@ -139,137 +290,131 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 42</file>
+          <file> 41</file>
         </tool>
       </outputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\src\main.c</name>
+      <name>$PROJ_DIR$\src\lib\sensors_fusion.c</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 11</file>
+          <name>ICCARM</name>
+          <file> 26</file>
         </tool>
         <tool>
-          <name>ICCARM</name>
-          <file> 10</file>
+          <name>BICOMP</name>
+          <file> 84</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 38</file>
+          <name>ICCARM</name>
+          <file> 83 19 77 69 42 57 39 101 90 91 10 67 12 64 1 8 14 34 23 70 62 40</file>
         </tool>
         <tool>
-          <name>ICCARM</name>
-          <file> 14 44 4 39 2 40 6 5 37 1 43 45 7 47 13 20 26 66 27</file>
+          <name>BICOMP</name>
+          <file> 83 19 77 69 42 57 39 101 90 91 10 67 12 64 1 8 14 34 23 70 62 40</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\src\lib\Timer.c</name>
+      <name>$PROJ_DIR$\src\lib\PWM.c</name>
       <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 99</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 80</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 54 83 19 77 69 42 57 39 101 76 87 59 22 4 36 62 40 7</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 100 36 62 19 77 69 42 57 39 101 40 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\source\system_stm32f10x.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 81</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 88</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 54 83 19 77 69 42 57 39 101 76 87 59 22 4</file>
+        </tool>
         <tool>
           <name>BICOMP</name>
           <file> 48</file>
         </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 53</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 50 39 2 40 6 5 37 1 60 59 26 4 66 20</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 50 39 2 40 6 5 37 1 60 14 44 4 43 45 7 47 13 26 66 20</file>
-        </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\src\lib\USART.c</name>
+      <name>$PROJ_DIR$\src\source\core_cm3.c</name>
       <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 49</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 56</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 63 39 64 2 40 6 5 37 1 69 50 60 65 59 27 66 4 20</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 63 39 64 2 40 6 5 37 1 69 50 60 65 14 44 4 43 45 7 47 13 27 66 20</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\src\lib\Serial.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 51</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 24 4 39 2 40 6 5 37 1 66 23 65 60 58 67 61 62 27 68</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\src\lib\Buffer.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 28</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 35</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 23 4 39 2 40 6 5 37 1</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 23 4 39 2 40 6 5 37 1</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\src\lib\ClockControl.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 52</file>
-        </tool>
         <tool>
           <name>ICCARM</name>
           <file> 71</file>
         </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 50</file>
+        </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 59 20</file>
+          <name>ICCARM</name>
+          <file> 83 19 77 69 42 57 39 101</file>
         </tool>
         <tool>
+          <name>BICOMP</name>
+          <file> 83 19 77 69 42 57 39 101</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\lib\I2C.c</name>
+      <outputs>
+        <tool>
           <name>ICCARM</name>
-          <file> 14 44 4 39 2 40 6 5 37 1 43 45 7 47 13 20</file>
+          <file> 68</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 44</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 62 19 77 69 42 57 39 101 40 3 54 83 76 87 59 22 4 12 67 64 1 8</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 62 19 77 69 42 57 39 101 40 100 12 67 83 64 1 8</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\c.out</name>
+      <inputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 35 27 46 56 68 60 73 99 63 47 30 29 33 106 26 58 81 94 55 17 104</file>
         </tool>
       </inputs>
     </file>
@@ -277,44 +422,104 @@
       <name>$PROJ_DIR$\main.c</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 11</file>
+          <name>ICCARM</name>
+          <file> 106</file>
         </tool>
         <tool>
-          <name>ICCARM</name>
-          <file> 10</file>
+          <name>BICOMP</name>
+          <file> 98</file>
         </tool>
       </outputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\src\startup\startup_stm32f10x_md_vl.s</name>
+      <name>$PROJ_DIR$\src\lib\MPU6050.c</name>
       <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 57</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\src\source\system_stm32f10x.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 29</file>
-        </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 55</file>
+          <file> 60</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 31</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 3</file>
+          <name>ICCARM</name>
+          <file> 91 10 83 19 77 69 42 57 39 101 67 12 62 40 1 8 64</file>
         </tool>
         <tool>
+          <name>BICOMP</name>
+          <file> 91 10 83 19 77 69 42 57 39 101 67 12 62 40 1 8 64</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\lib\Buffer.c</name>
+      <outputs>
+        <tool>
           <name>ICCARM</name>
-          <file> 14 44 4 39 2 40 6 5 37 1 43 45 7 47 13</file>
+          <file> 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 74</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8 83 19 77 69 42 57 39 101</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8 83 19 77 69 42 57 39 101</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\lib\Wire.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 29</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 52</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 62 19 77 69 42 57 39 101 40 10 83 67 12</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 62 19 77 69 42 57 39 101 40 10 83 67 12</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 106</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 98</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 54 83 19 77 69 42 57 39 101 76 87 59 22 4 7 103 67 93 1 8 64 10 12 91 66 36 62 40 90</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20</file>
         </tool>
       </inputs>
     </file>
@@ -323,9 +528,55 @@
       <outputs>
         <tool>
           <name>ILINK</name>
-          <file> 0</file>
+          <file> 72</file>
         </tool>
       </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\lib\Timer.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 47</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 49</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 86 19 77 69 42 57 39 101 40 3 54 83 76 87 59 22 4 103 67 7</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 86 19 77 69 42 57 39 101 40 100 103 83 67 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\lib\storage.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 82</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 28</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 62 19 77 69 42 57 39 101 40 107 83</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 62 19 77 69 42 57 39 101 40 107 83</file>
+        </tool>
+      </inputs>
     </file>
   </configuration>
   <configuration>

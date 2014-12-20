@@ -32,8 +32,12 @@
 #define MSNR_DD_DCM31 0x58
 #define MSNR_DD_DCM32 0x5C
 #define MSNR_DD_DCM33 0x60
-
-#define MSNR_PATTERNSIZE 5
+#define MSNR_DD_HMC5883_IDA 0x64
+#define MSNR_DD_HMC5883_IDB 0x68
+#define MSNR_DD_HMC5883_IDC 0x6C
+#define MSNR_DD_SENSFUS_ACCXNORM 0x70
+#define MSNR_DD_SENSFUS_ACCYNORM 0x74
+#define MSNR_DD_SENSFUS_ACCZNORM 0x78
 
 #define MSNR_STARTOP_PATTERN "start"
 
@@ -43,11 +47,11 @@ typedef enum msnr_mode{
 }msnr_mode;
 
 void Messenger_Initialize(void (*start_operation)(void), msnr_mode mode);
-
+void messenger_attach_pwm(void (*callback)(uint8_t, uint16_t));
 void Messenger_SendByte(uint8_t);
-
 void Messenger_SendWord(uint16_t word, uint8_t data_descr);
-
 void Messenger_SendDWord(uint32_t dword, uint8_t data_descr);
 
+static void messenger_parse_packet(uint8_t *packet);
+static void byte_received_handler(uint8_t rec_byte);
 #endif
