@@ -9,22 +9,22 @@ void OperationCompleteHandler(void* operation);
 bool Wire_AttachDevice(Wire_Device_Type* newDevice)
 {
   Wire_Device_Type** newPointer;
-	
+
   if(newDevice == NULL) {
     return false;
   }
-  
+
   Wire.DevicesNum++;
   newPointer = (Wire_Device_Type**)realloc(Wire.Devices, Wire.DevicesNum*sizeof(Wire_Device_Type*));
-  
+
   if(newPointer == NULL) {
     Wire.DevicesNum--;
     return false;
   }
-  
+
   Wire.Devices = newPointer;
   Wire.Devices[Wire.DevicesNum - 1] = newDevice;
-  
+
   return true;
 }
 

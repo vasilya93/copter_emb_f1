@@ -117,6 +117,9 @@ uint8_t *fifo_get_array(fifo_t *fifo, uint16_t *size)
   return array;
 }
 
+//it is assumed in this function that no overwrite happens,
+//as number of free elements is just decreased and position of the first elemnt
+//is not changed
 void fifo_increase_elems_count(fifo_t *fifo, uint16_t value_added)
 {
   fifo->index_last += value_added;

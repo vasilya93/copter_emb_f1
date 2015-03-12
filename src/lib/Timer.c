@@ -69,8 +69,8 @@ bool Timer_start(uint8_t timer, void (*handler)(), uint32_t useconds, bool do_re
   timer_ref->handler = handler;
   
   if (useconds <= 1000) {
-    timer_settings->PSC = (16 * useconds) - 1;
-    timer_settings->ARR = 1;
+    timer_settings->PSC = 15;
+    timer_settings->ARR = useconds;
   } else if (useconds <= 10000) {
     timer_settings->PSC = 1600 - 1;
     timer_settings->ARR = useconds / 100;
