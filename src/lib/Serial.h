@@ -1,15 +1,19 @@
-#include "stdint.h"
-#include "stdbool.h"
-#include "Buffer.h"
-
 #ifndef SERIAL_H
 #define SERIAL_H
+
+#include <stdint.h>
+#include <stdbool.h>
+#include "fifo.h"
+#include "Buffer.h"
 
 #define SERIAL_STATE_INITIALIZED 0x01
 #define SERIAL_STATE_BUSY 0x02
 #define SERIAL_STATE_PATTERNED 0x04
 
 #define NUMBER_AS_STRING_SIZE 10
+
+#define SERIAL_SIZE_FIFO_OUT 256
+#define SERIAL_SIZE_FIFO_IN 256
 
 typedef union WordsToBytes
 {
@@ -27,7 +31,7 @@ typedef union _32ToBytes
 typedef struct Serial_Type
 {
   Buffer_Type InputBuffer;
-  Buffer_Type OutputBuffer;
+  fifo_t fifo_output;
   
   WordsToBytes WordConverter;
   _32ToBytes _32Converter;

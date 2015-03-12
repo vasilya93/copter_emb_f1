@@ -20,7 +20,7 @@ void Serial_Begin(unsigned int baudrate)
 {
   //init buffers and attach events
   SerialInit();
-
+  
   //configure registers
   USART_Begin(baudrate);
 }
@@ -29,7 +29,7 @@ void Serial_BeginConfigured(unsigned int baudrate, uint8_t conf)
 {
   //init buffers and attach events
   SerialInit();
-    
+  
   //configure registers
   USART_BeginConfigured(baudrate, conf);
 }
@@ -38,7 +38,7 @@ void Serial_End()
 {
   //there is no need to deinit buffers because deinitialization proc is similar
   //to init and init is accomplished during 'Begin' function
-    
+  
   USART_End();
   
   USART_ByteReceived_Detach();
@@ -50,12 +50,12 @@ void Serial_End()
 
 void Serial_WriteByte(uint8_t writtenByte)
 {
-	unsigned int i;
-	
-  if (Buffer_Push(&Serial.OutputBuffer, writtenByte)) {
-		for (i = 0; i < Serial.OBOH_Amount; i++)
-			Serial.OutBufOverHandlers[i]();
-	}
+  unsigned int i;
+  
+  if (fifo_push(&Serial.fifo_output, writtenByte)) {
+    for (i = 0; i < Serial.OBOH_Amount; i++)
+      Serial.OutBufOverHandlers[i]();
+  }
   RunTransmission();
 }
 
@@ -127,61 +127,61 @@ void Serial_WriteFloatAsString(float number)
 
 void Serial_WriteInt32(uint32_t number)
 {
-	int i, j;
-	
+  int i, j;
+  
   Serial._32Converter.Integer = number;
-	for (i = 3; i >= 0; i--) {
-		if (Buffer_Push(&Serial.OutputBuffer, Serial._32Converter.Bytes[i])) {
-			for (j = 0; j < Serial.OBOH_Amount; j++)
-				Serial.OutBufOverHandlers[j]();
-		}
-	}
+  for (i = 3; i >= 0; i--) {
+    if (fifo_push(&Serial.fifo_output, Serial._32Converter.Bytes[i])) {
+      for (j = 0; j < Serial.OBOH_Amount; j++)
+        Serial.OutBufOverHandlers[j]();
+    }
+  }
   
   RunTransmission();
 }
 
 void Serial_WriteInt16(uint16_t number)
 {
-	int i, j;
-	
+  int i, j;
+  
   Serial.WordConverter.Word = number;
-	
-	for (i = 1; i >= 0; i--) {
-		if (Buffer_Push(&Serial.OutputBuffer, Serial.WordConverter.Bytes[i])) {
-			for (j = 0; j < Serial.OBOH_Amount; j++)
-				Serial.OutBufOverHandlers[j]();
-		}
-	}
+  
+  for (i = 1; i >= 0; i--) {
+    if (fifo_push(&Serial.fifo_output, Serial.WordConverter.Bytes[i])) {
+      for (j = 0; j < Serial.OBOH_Amount; j++)
+        Serial.OutBufOverHandlers[j]();
+    }
+  }
   
   RunTransmission();
 }
 
 void Serial_WriteFloat(float number)
 {
-	int i, j;
-	
-  Serial._32Converter.RealNum = number;
-	for (i = 3; i >= 0; i--) {
-		if (Buffer_Push(&Serial.OutputBuffer, Serial._32Converter.Bytes[i])) {
-			for (j = 0; j < Serial.OBOH_Amount; j++)
-				Serial.OutBufOverHandlers[j]();
-		}
-	}
+  int i, j;
   
+  Serial._32Converter.RealNum = number;
+  for (i = 3; i >= 0; i--) {
+    if (fifo_push(&Serial.fifo_output, Serial._32Converter.Bytes[i])) {
+      for (j = 0; j < Serial.OBOH_Amount; j++)
+        Serial.OutBufOverHandlers[j]();
+    }
+  }
+
   RunTransmission();
 }
 
 void Serial_WriteLine(const char* line)
 {
   unsigned int j;
-	uint16_t i = 0;
-	
+  uint16_t i = 0;
+  
   while(line[i] != '\0')
   {
-    if (Buffer_Push(&Serial.OutputBuffer, line[i])) {
-			for (j = 0; j < Serial.OBOH_Amount; j++)
-				Serial.OutBufOverHandlers[j]();
-		}
+    if (fifo_push(&Serial.fifo_output, line[i])) {
+      for (j = 0; j < Serial.OBOH_Amount; j++)
+        Serial.OutBufOverHandlers[j]();
+    }
     i++;
   }
   
@@ -197,8 +197,8 @@ void Serial_SetReceivePattern(char* pattern)
 
 bool Serial_ByteReceived_Attach(void(*handler)(uint8_t))
 {
-	void (**newPointer)(uint8_t receivedByte);
-	
+  void (**newPointer)(uint8_t receivedByte);
+  
   if(handler == NULL)
   {
     return false;
@@ -228,8 +228,8 @@ void Serial_ByteReceived_Detach()
 
 bool Serial_VariableReceived_Attach(void(*handler)(void))
 {
-	void (**newPointer)(void);
-	
+  void (**newPointer)(void);
+  
   if(handler == NULL)
   {
     return false;
@@ -259,8 +259,8 @@ void Serial_VariableReceived_Detach()
 
 bool Serial_InpBufOver_Attach(void(*handler)())
 {
-	void (**newPointer)();
-	
+  void (**newPointer)();
+  
   if(handler == NULL)
   {
     return false;
@@ -290,8 +290,8 @@ void Serial_InpBufOver_Detach()
 
 bool Serial_OutBufOver_Attach(void(*handler)())
 {
-	void (**newPointer)();
-		
+  void (**newPointer)();
+  
   if(handler == NULL)
   {
     return false;
@@ -342,7 +342,7 @@ void SerialInit()
   
   //initialize Serial object
   Buffer_Init(&Serial.InputBuffer);
-  Buffer_Init(&Serial.OutputBuffer);
+  fifo_initialize(&Serial.fifo_output, SERIAL_SIZE_FIFO_OUT);
   
   Serial_ByteReceived_Detach();
   Serial_VariableReceived_Detach();
@@ -360,7 +360,7 @@ void RunTransmission()
 {
   //it is necessary to check if the buffer is not empty because an interrupt
   //can take away the byte since the previous operation
-  if((~Serial.State & SERIAL_STATE_BUSY) && (~Serial.OutputBuffer.Status && BUFFER_STATUS_EMPTY))
+  if((~Serial.State & SERIAL_STATE_BUSY) && (!fifo_is_empty(&Serial.fifo_output)))
   {
     //USART_WriteByte(Buffer_Pop(&Serial.OutputBuffer));
     //TXE bit in SR is somehow set sot TXEI will handle the bytes in the buffer
@@ -370,10 +370,10 @@ void RunTransmission()
 
 void TC_Handler()
 {
-  if(~Serial.OutputBuffer.Status & BUFFER_STATUS_EMPTY)
+  if(!fifo_is_empty(&Serial.fifo_output))
   {
     USART_EnableInterrupts(USART_IT_TXE);
-    USART_WriteByte(Buffer_Pop(&Serial.OutputBuffer));
+    USART_WriteByte(fifo_pop(&Serial.fifo_output));
   }
   else
   {
@@ -383,23 +383,20 @@ void TC_Handler()
 
 void TXE_Handler()
 {
-  if(~Serial.OutputBuffer.Status & BUFFER_STATUS_EMPTY)
+  if(!fifo_is_empty(&Serial.fifo_output))
   {
-    USART_WriteByte(Buffer_Pop(&Serial.OutputBuffer));
-  }
-  else
-  {
+    USART_WriteByte(fifo_pop(&Serial.fifo_output));
+  } else {
     USART_DisableInterrupts(USART_IT_TXE);
   }
 }
 
 void RXNE_Handler(uint8_t symbol)
 {
-	unsigned int i;
+  unsigned int i;
   for(i = 0; i < Serial.BRH_Amount; i++) {
     Serial.ByteReceivedHandlers[i](symbol);
   }
   if(Serial.State & SERIAL_STATE_PATTERNED) {
   }
 }
-
