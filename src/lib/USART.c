@@ -118,17 +118,16 @@ void USART_ByteReceived_Detach()
 
 bool USART_TransRegEmpty_Attach(void (*handler)())
 {
-	void (**newPointer)();
-  if(handler == NULL)
-  {
+  void (**newPointer)();
+
+  if(handler == NULL) {
     return false;
   }
   
   USART.TREH_Amount++;
   newPointer = (void (**)())realloc(USART.TransRegEmptyHandlers, USART.TREH_Amount*sizeof(void(*)()));
   
-  if(newPointer == NULL)
-  {
+  if(newPointer == NULL) {
     USART.TREH_Amount--;
     return false;
   }
@@ -148,18 +147,16 @@ void USART_TransRegEmpty_Detach()
 
 bool USART_TransComplete_Attach(void (*handler)())
 {
-	void (**newPointer)();
+  void (**newPointer)();
 	
-  if(handler == NULL)
-  {
+  if(handler == NULL) {
     return false;
   }
   
   USART.TCH_Amount++;
   newPointer = (void (**)())realloc(USART.TransCompleteHandlers, USART.TCH_Amount*sizeof(void(*)()));
   
-  if(newPointer == NULL)
-  {
+  if(newPointer == NULL) {
     USART.TCH_Amount--;
     return false;
   }
@@ -196,40 +193,38 @@ void USART_InitStructure(void)
 
 void USART_EnableInterrupts(uint8_t interrupts)
 {
-  if(interrupts & USART_IT_TXE)
-  {
+  if(interrupts & USART_IT_TXE) {
     USART3->CR1 |= USART_CR1_TXEIE;
-  }  
-  if(interrupts & USART_IT_TC)
-  {
+  }
+
+  if(interrupts & USART_IT_TC) {
     USART3->CR1 |= USART_CR1_TCIE;
-  }  
-  if(interrupts & USART_IT_RXNE)
-  {
+  }
+
+  if(interrupts & USART_IT_RXNE) {
     USART3->CR1 |= USART_CR1_RXNEIE;
-  }  
-  if(interrupts & USART_IT_PE)
-  {
+  }
+
+  if(interrupts & USART_IT_PE) {
     USART3->CR1 |= USART_CR1_PEIE;
   }
 }
 
 void USART_DisableInterrupts(uint8_t interrupts)
 {
-  if(interrupts & USART_IT_TXE)
-  {
+  if(interrupts & USART_IT_TXE) {
     USART3->CR1 &= ~USART_CR1_TXEIE;
-  }  
-  if(interrupts & USART_IT_TC)
-  {
+  }
+
+  if(interrupts & USART_IT_TC) {
     USART3->CR1 &= ~USART_CR1_TCIE;
-  }  
-  if(interrupts & USART_IT_RXNE)
-  {
+  }
+
+  if(interrupts & USART_IT_RXNE) {
     USART3->CR1 &= ~USART_CR1_RXNEIE;
-  }  
-  if(interrupts & USART_IT_PE)
-  {
+  }
+
+  if(interrupts & USART_IT_PE) {
     USART3->CR1 &= ~USART_CR1_PEIE;
   }
 }
