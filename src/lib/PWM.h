@@ -2,6 +2,7 @@
 #define PWM_H
 
 #include <stdlib.h>
+#include <stdint.h>
 
 #define PWM_DESCRETES_COUNT 10000
 #define PWM_FREQUENCY 50
