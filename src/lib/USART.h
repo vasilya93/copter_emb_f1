@@ -4,6 +4,14 @@
 #ifndef USART_H
 #define USART_H
 
+//#define USE_USART3
+
+#ifdef USE_USART3
+#define USART_CURRENT USART3
+#else
+#define USART_CURRENT USART2
+#endif
+
 //apb2 for usart1
 //apb1 usart2 - usart5, i2c1, i2c2, tim2 - tim7 (usart3 for me)
 //way apb2 prescaler <- ahb prescaler
@@ -56,7 +64,11 @@ void USART_EnableInterrupts(uint8_t);
 
 void USART_DisableInterrupts(uint8_t);
 
+#ifdef USE_USART3
 void USART3_IRQHandler(void);
+#else
+void USART2_IRQHandler(void);
+#endif
 
 typedef struct USART_Type
 {

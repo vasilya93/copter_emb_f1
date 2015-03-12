@@ -100,7 +100,7 @@ bool I2C_StartOperation(I2C_OpDescript_Type description, uint8_t* bytes)
   }
   
   I2C1->CR1 |= I2C_CR1_START;
-  Messenger_SendByte(I2C_MSG_STRTST); 
+  //Messenger_SendByte(I2C_MSG_STRTST); 
   
   return true;
 }

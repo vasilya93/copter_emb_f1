@@ -20,7 +20,7 @@ void USART_SetupBasic(unsigned int speed);
 void USART_Begin(unsigned int speed)
 {
   USART_SetupBasic(speed);
-  USART3->CR1 |= USART_CR1_RE | USART_CR1_TE;
+  USART_CURRENT->CR1 |= USART_CR1_RE | USART_CR1_TE;
 }
 
 void USART_BeginConfigured(uint16_t speed, uint8_t conf)
@@ -28,66 +28,63 @@ void USART_BeginConfigured(uint16_t speed, uint8_t conf)
   USART_SetupBasic(speed);
   
   //configuring data bits, parity control and stop bits
-  if(conf & USART_9BYTE)
-  {
-    USART3->CR1 |= USART_CR1_M;
-  }
-  else
-  {
-    USART3->CR1 &= ~USART_CR1_M;
+  if(conf & USART_9BYTE) {
+    USART_CURRENT->CR1 |= USART_CR1_M;
+  } else {
+    USART_CURRENT->CR1 &= ~USART_CR1_M;
   }
   
-  if(conf & USART_PCENABLE)
-  {
-    USART3->CR1 |= USART_CR1_PCE;
-    if(conf & USART_PARITY_ODD)
-    {
-      USART3->CR1 |= USART_CR1_PS;
+  if(conf & USART_PCENABLE) {
+    USART_CURRENT->CR1 |= USART_CR1_PCE;
+    if(conf & USART_PARITY_ODD) {
+      USART_CURRENT->CR1 |= USART_CR1_PS;
+    } else {
+      USART_CURRENT->CR1 &= ~USART_CR1_PS;
     }
-    else
-    {
-      USART3->CR1 &= ~USART_CR1_PS;
-    }
-  }
-  else
-  {
-    USART3->CR1 &= ~USART_CR1_PCE;
+  } else {
+    USART_CURRENT->CR1 &= ~USART_CR1_PCE;
   }
   
   switch(conf & USART_SB)
   {
   case USART_SB1:
-    USART3->CR2 &= ~USART_CR2_STOP;
+    USART_CURRENT->CR2 &= ~USART_CR2_STOP;
     break;
   case USART_SB05:
-    USART3->CR2 |= USART_CR2_STOP_0;
+    USART_CURRENT->CR2 |= USART_CR2_STOP_0;
     break;
   case USART_SB2:
-    USART3->CR2 |= USART_CR2_STOP_1;
+    USART_CURRENT->CR2 |= USART_CR2_STOP_1;
     break;
   case USART_SB15:
-    USART3->CR2 |= USART_CR2_STOP;
+    USART_CURRENT->CR2 |= USART_CR2_STOP;
     break;
   }
   
-  USART3->CR1 |= USART_CR1_RE | USART_CR1_TE;
+  USART_CURRENT->CR1 |= USART_CR1_RE | USART_CR1_TE;
 }
 
 void USART_End()
 {
+#ifdef USE_USART3
   RCC->APB1RSTR |= RCC_APB1RSTR_USART3RST;
   RCC->APB1RSTR &= ~RCC_APB1RSTR_USART3RST;
   RCC->APB1ENR &= ~RCC_APB1ENR_USART3EN;
+#else
+  RCC->APB1RSTR |= RCC_APB1RSTR_USART2RST;
+  RCC->APB1RSTR &= ~RCC_APB1RSTR_USART2RST;
+  RCC->APB1ENR &= ~RCC_APB1ENR_USART2EN;
+#endif
 }
 
 void USART_WriteByte(uint8_t writtenByte)
 {
-  USART3->DR = writtenByte;
+  USART_CURRENT->DR = writtenByte;
 }
 
 bool USART_ByteReceived_Attach(void (*handler)(uint8_t receicedByte))
 {
-	void (**newPointer)(uint8_t receivedByte);
+  void (**newPointer)(uint8_t receivedByte);
 	
   if(handler == NULL)
   {
@@ -95,7 +92,8 @@ bool USART_ByteReceived_Attach(void (*handler)(uint8_t receicedByte))
   }
   
   USART.BRH_Amount++;
-  newPointer = (void (**)(uint8_t))realloc(USART.ByteReceivedHandlers, USART.BRH_Amount*sizeof(void(*)(uint8_t)));
+  newPointer = (void (**)(uint8_t))realloc(USART.ByteReceivedHandlers,
+                                           USART.BRH_Amount*sizeof(void(*)(uint8_t)));
   
   if(newPointer == NULL)
   {
@@ -194,43 +192,44 @@ void USART_InitStructure(void)
 void USART_EnableInterrupts(uint8_t interrupts)
 {
   if(interrupts & USART_IT_TXE) {
-    USART3->CR1 |= USART_CR1_TXEIE;
+    USART_CURRENT->CR1 |= USART_CR1_TXEIE;
   }
 
   if(interrupts & USART_IT_TC) {
-    USART3->CR1 |= USART_CR1_TCIE;
+    USART_CURRENT->CR1 |= USART_CR1_TCIE;
   }
 
   if(interrupts & USART_IT_RXNE) {
-    USART3->CR1 |= USART_CR1_RXNEIE;
+    USART_CURRENT->CR1 |= USART_CR1_RXNEIE;
   }
 
   if(interrupts & USART_IT_PE) {
-    USART3->CR1 |= USART_CR1_PEIE;
+    USART_CURRENT->CR1 |= USART_CR1_PEIE;
   }
 }
 
 void USART_DisableInterrupts(uint8_t interrupts)
 {
   if(interrupts & USART_IT_TXE) {
-    USART3->CR1 &= ~USART_CR1_TXEIE;
+    USART_CURRENT->CR1 &= ~USART_CR1_TXEIE;
   }
 
   if(interrupts & USART_IT_TC) {
-    USART3->CR1 &= ~USART_CR1_TCIE;
+    USART_CURRENT->CR1 &= ~USART_CR1_TCIE;
   }
 
   if(interrupts & USART_IT_RXNE) {
-    USART3->CR1 &= ~USART_CR1_RXNEIE;
+    USART_CURRENT->CR1 &= ~USART_CR1_RXNEIE;
   }
 
   if(interrupts & USART_IT_PE) {
-    USART3->CR1 &= ~USART_CR1_PEIE;
+    USART_CURRENT->CR1 &= ~USART_CR1_PEIE;
   }
 }
 
 //-----------------------------Handlers-----------------------------------------
 
+#ifdef USE_USART3
 void USART3_IRQHandler(void)
 {
   unsigned int i;
@@ -267,6 +266,41 @@ void USART3_IRQHandler(void)
   //software must wait for RXNE before clearing PE
 }
 
+#else
+
+void USART2_IRQHandler(void)
+{
+  unsigned int i;
+  if((USART2->SR & USART_SR_TXE) && (USART2->CR1 & USART_CR1_TXEIE)) {
+    //cleared by a write to DR
+    for(i = 0; i < USART.TREH_Amount; i++) {
+      (*USART.TransRegEmptyHandlers[i])();
+    }
+  }
+
+  if((USART2->SR & USART_SR_TC) && (USART2->CR1 & USART_CR1_TCIE)) {
+    //cleared by a read from SR followed by a write to DR
+    //can be cleared by writing '0' to it (recommended for multibuffer communication)
+    USART2->SR &= ~USART_SR_TC;
+    for(i = 0; i < USART.TCH_Amount; i++) {
+      (*USART.TransCompleteHandlers[i])();
+    }
+  }
+
+  if((USART2->SR & USART_SR_RXNE) && (USART2->CR1 & USART_CR1_RXNEIE)) {
+    //cleared by a read to DR
+    //can be cleared by writing '0' to it (recommended for multibuffer communication)
+    uint8_t receivedByte = USART2->DR;
+    for(i = 0; i < USART.BRH_Amount; i++) {
+      (*USART.ByteReceivedHandlers[i])(receivedByte);
+    }
+  }
+  
+  //PE cleared by a sequence of SR read and read/write access to DR
+  //software must wait for RXNE before clearing PE
+}
+#endif
+
 //-------------------------Hidden funtions--------------------------------------
 
 void USART_SetupBasic(unsigned int baudrate)
@@ -275,18 +309,14 @@ void USART_SetupBasic(unsigned int baudrate)
   float USARTDIV;
   unsigned int DivMantissa;
   unsigned int DivFraction;
-	
+
+#ifdef USE_USART3 
   NVIC_EnableIRQ(USART3_IRQn);
   
   //enabling GPIOB clocking
   RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
- 
+
   //configuring output pins
-  /*GPIOB->MODER &= ~(GPIO_MODER_MODER10 | GPIO_MODER_MODER11);
-  GPIOB->MODER |= GPIO_MODER_MODER10_1 | GPIO_MODER_MODER11_1;
-  GPIOB->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR10 | GPIO_OSPEEDER_OSPEEDR11;
-  GPIOB->AFR[1] &= ~((0xF << 8) | (0xF << 12));
-  GPIOB->AFR[1] |= (0x7 << 8) | (0x7 << 12);*/
   GPIOB->CRH &= ~(GPIO_CRH_MODE10 |
                  GPIO_CRH_CNF10 |
                  GPIO_CRH_MODE11 |
@@ -294,26 +324,45 @@ void USART_SetupBasic(unsigned int baudrate)
   GPIOB->CRH |= (GPIO_CRH_MODE10_1 |
                  GPIO_CRH_CNF10_1 |
                  GPIO_CRH_CNF11_0);
-
+  
   //USART clocking
   RCC->APB1ENR |= RCC_APB1ENR_USART3EN; 
+#else
+  NVIC_EnableIRQ(USART2_IRQn);
+
+  //enabling GPIOB clocking
+  RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
+
+  //configuring output pins
+  GPIOA->CRL &= ~(GPIO_CRL_MODE2 |
+                  GPIO_CRL_CNF2 |
+                  GPIO_CRL_MODE3 |
+                  GPIO_CRL_CNF3);
+  GPIOA->CRL |= (GPIO_CRL_MODE2_1 |
+                 GPIO_CRL_CNF2_1 |
+                 GPIO_CRL_CNF3_0);
+  
+  //USART clocking
+  RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
+#endif
+ 
   
   //configuring USART
-  USART3->SR &= ~USART_SR_TC;
-  USART3->CR1 |= USART_CR1_UE | USART_CR1_RXNEIE | USART_CR1_TCIE;
-  
+  USART_CURRENT->SR &= ~USART_SR_TC;
+  USART_CURRENT->CR1 |= USART_CR1_UE | USART_CR1_RXNEIE | USART_CR1_TCIE;
+
   //calculating Baudrate Register value
   USARTDIV = (float)ClockControl.APB1_Frequency / (float)(16 * baudrate);
   DivMantissa = (int)USARTDIV;
   while(DivMantissa < 1); //caution in case fck is too low or baudrate is too big
-  
+
   Fraction = (USARTDIV - DivMantissa);
   if(Fraction >= (0.0625 * 15.5)) {
     DivFraction = 0;
     DivMantissa++;
   } else {
     DivFraction = (int) floor((Fraction / 0.0625) + 0.5);
-  }  
-  
-  USART3->BRR = DivFraction | (DivMantissa << 4);
+  }
+
+  USART_CURRENT->BRR = DivFraction | (DivMantissa << 4);
 }
