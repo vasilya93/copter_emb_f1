@@ -137,21 +137,6 @@
 #define MPU6050_MSG_GYROXPROC 48
 #define MPU6050_MSG_CYCLECOMP 49
 
-#define MPU6050_ST_USE_GYRO_PRESET 0x00
-#define MPU6050_ST_CALIBRATE_GYRO 0x01
-#define MPU6050_ST_USE_ACCEL_PRESET 0x00
-#define MPU6050_ST_CALIBRATE_ACCEL 0x02
-
-#define MPU6050_ST_GRXCBTD 0x04 //gyro calibrated
-#define MPU6050_ST_GRYCBTD 0x08
-#define MPU6050_ST_GRZCBTD 0x10
-
-#define MPU6050_ST_ACCXCBTD 0x20 //accel calibrated
-#define MPU6050_ST_ACCYCBTD 0x40
-#define MPU6050_ST_ACCZCBTD 0x80
-
-#define MPU6050_CALIBRATION_CYCLES 10
-
 //#define MPU6050_LSB_PER_G 500
 #define MPU6050_LSB_PER_G 16384
 
@@ -161,7 +146,7 @@ typedef enum coordinate_t {
 	COORDINATE_Z
 }coordinate_t;
 
-void MPU6050_Initialize(uint8_t startup_type);
+void MPU6050_Initialize(void);
 
 uint8_t* MPU6050_GetNextInitOperation(uint16_t currentDataDescript, I2C_OpDescript_Type* opDescript);
 uint8_t* MPU6050_GetNextRegOperation(uint16_t currentDataDescript, I2C_OpDescript_Type* opDescript);
@@ -172,7 +157,6 @@ int MPU6050_attach_gyro_handler(void (*new_handler)(int16_t, int16_t, int16_t));
 
 typedef struct MPU6050_Data_Type
 {
-	uint8_t state;
 	uint8_t renew_state;
 	uint8_t tmp;
 
@@ -180,33 +164,9 @@ typedef struct MPU6050_Data_Type
 	int16_t gyroy;
 	int16_t gyroz;
 
-	int16_t gyrox_zero;
-	int16_t gyroy_zero;
-	int16_t gyroz_zero;
-
-	int32_t gyrox_accum;
-	int32_t gyroy_accum;
-	int32_t gyroz_accum;
-
-	uint16_t x_counter;
-	uint16_t y_counter;
-	uint16_t z_counter;
-
 	int16_t accelx;
 	int16_t accely;
 	int16_t accelz;
-
-	int16_t accelx_zero;
-	int16_t accely_zero;
-	int16_t accelz_zero;
-	
-	int32_t accelx_accum;
-	int32_t accely_accum;
-	int32_t accelz_accum;
-
-	uint16_t accelx_counter;
-	uint16_t accely_counter;
-	uint16_t accelz_counter;
 
 	void (**accel_handlers)(int16_t accelx, int16_t accely, int16_t accelz);
 	uint8_t accel_handlers_num;
