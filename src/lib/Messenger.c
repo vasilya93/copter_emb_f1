@@ -81,6 +81,20 @@ void Messenger_SendDWord(uint32_t dword, uint8_t data_descr)
   Serial_WriteInt32(dword);
 }
 
+void Messenger_SendFloat(float value, uint8_t data_descr)
+{
+  if (current_mode == MSNR_MODE_1BYTE)
+    return;
+  
+  if (!(data_descr & MSNR_DD_MASK))
+    return;
+  if (data_descr & ~MSNR_DD_MASK)
+    return;
+  
+  Serial_WriteByte(MSNR_MT_DWRD | data_descr);
+  Serial_WriteFloat(value);
+}
+
 void byte_received_handler(uint8_t rec_byte)
 {
   uint8_t *packet;
@@ -93,10 +107,10 @@ void byte_received_handler(uint8_t rec_byte)
   if (msgr_state & MSNR_STAT_STARTED) {
     fifo_reset(&fifo_received);
     messenger_parse_packet(packet);
-  } else if (fifo_is_full(&fifo_received)){
-    if (!strncmp((char *)packet, MSNR_STARTOP_PATTERN, MSNR_SIZE_MESSAGE))
-      msgr_state |= MSNR_STAT_STARTED;
-      start_op_callback();
+  } else if (!strncmp((char *)packet, MSNR_STARTOP_PATTERN, MSNR_SIZE_MESSAGE)){
+    fifo_reset(&fifo_received);
+    msgr_state |= MSNR_STAT_STARTED;
+    start_op_callback();
   }
   free(packet);
 }
@@ -107,5 +121,5 @@ static void messenger_parse_packet(uint8_t *packet)
   callback_pwm(PWM_CHANNEL1, *p_value);
   callback_pwm(PWM_CHANNEL2, *p_value);
   callback_pwm(PWM_CHANNEL3, *p_value);
-  callback_pwm(PWM_CHANNEL4, *p_value);
+  callback_pwm(PWM_CHANNEL4, *p_value); //350 - 1140
 }

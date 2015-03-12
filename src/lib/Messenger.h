@@ -38,6 +38,9 @@
 #define MSNR_DD_SENSFUS_ACCXNORM 0x70
 #define MSNR_DD_SENSFUS_ACCYNORM 0x74
 #define MSNR_DD_SENSFUS_ACCZNORM 0x78
+#define MSNR_DD_SENSFUS_ROLL 0x7C
+#define MSNR_DD_SENSFUS_PITCH 0x80
+#define MSNR_DD_SENSFUS_YAW 0x84
 
 #define MSNR_STARTOP_PATTERN "start"
 
@@ -51,6 +54,7 @@ void messenger_attach_pwm(void (*callback)(uint8_t, uint16_t));
 void Messenger_SendByte(uint8_t);
 void Messenger_SendWord(uint16_t word, uint8_t data_descr);
 void Messenger_SendDWord(uint32_t dword, uint8_t data_descr);
+void Messenger_SendFloat(float value, uint8_t data_descr);
 
 static void messenger_parse_packet(uint8_t *packet);
 static void byte_received_handler(uint8_t rec_byte);
