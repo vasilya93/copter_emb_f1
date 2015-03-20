@@ -77,7 +77,7 @@ bool I2C_OperationComplete_Attach(void (*handler)(void* operation))
 bool I2C_StartOperation(I2C_OpDescript_Type description, uint8_t* bytes)
 {
   unsigned int i;
-  
+
   if((description.BytesNum > I2C_DATA_SIZE) || (I2C_Operation.State & I2C_ST_BUSY)) {
     Messenger_SendByte(I2C_MSG_STRTFL); 
     free(bytes);
@@ -119,11 +119,13 @@ void I2C1_EV_IRQHandler(void)
   if(I2C1->SR1 & I2C_SR1_SB) {
     sb_counter++;
     I2C_SendAddress();
+    //Messenger_SendByte(I2C_MSG_SBSND);
     return;
   }
   
   if(I2C1->SR1 & I2C_SR1_ADDR) {
     addr_counter++;
+    //Messenger_SendByte(I2C_MSG_ADSND);
     if (I2C_Operation.Description.IsRead &&
         I2C_Operation.Description.BytesNum == 1) {
           I2C1->CR1 &= ~I2C_CR1_ACK; //This should be done during event6, before addr is cleared
@@ -199,12 +201,14 @@ void I2C_OperateReceiver()
 void I2C_TransmitRegisterEmpty()
 {
   unsigned int i;
-  if(I2C_Operation.CurrentByte++ < I2C_Operation.Description.BytesNum) {
-    I2C1->DR = I2C_Operation.Bytes[I2C_Operation.CurrentByte];
+  if(I2C_Operation.CurrentByte < I2C_Operation.Description.BytesNum) {
+    I2C1->DR = I2C_Operation.Bytes[I2C_Operation.CurrentByte++];
     //Messenger_SendByte(I2C_MSG_TXE);
   } else if(I2C1->SR1 & I2C_SR1_BTF) {
     I2C1->CR1 |= I2C_CR1_STOP;
     //Messenger_SendByte(I2C_MSG_TRSCPL);
+    for (int i = 0; i < 20; i++)
+      __NOP();
     I2C_Operation.State &= ~I2C_ST_BUSY; //danger
     
     for(i = 0; i < I2C_Operation.OCH_Amount; i++) {
