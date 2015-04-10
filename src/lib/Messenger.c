@@ -38,8 +38,8 @@ void Messenger_SendByte(uint8_t message)
   switch (current_mode) {
   case MSNR_MODE_5BYTE: {
     Serial_WriteByte(MSNR_MT_BYTE);
-    Serial_WriteByte(0);
-    Serial_WriteByte(0);
+    //Serial_WriteByte(0);
+    //Serial_WriteByte(0);
     Serial_WriteByte(0);
     Serial_WriteByte(message);
   }
@@ -62,8 +62,8 @@ void Messenger_SendWord(uint16_t word, uint8_t data_descr)
     return;
   
   Serial_WriteByte(MSNR_MT_WORD | data_descr);
-  Serial_WriteByte(0);
-  Serial_WriteByte(0);
+  //Serial_WriteByte(0);
+  //Serial_WriteByte(0);
   Serial_WriteInt16(word);
 }
 
