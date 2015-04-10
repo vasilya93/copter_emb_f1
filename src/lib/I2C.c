@@ -34,19 +34,14 @@ void I2C_Begin(void)
                  GPIO_CRL_CNF6 |
                    GPIO_CRL_MODE7_0 |
                      GPIO_CRL_CNF7);
-  //GPIOB->MODER |=  /*I2C1*/ GPIO_MODER_MODER6_1 | GPIO_MODER_MODER7_1;
-  //GPIOB->OTYPER |= /*I2C1*/ GPIO_OTYPER_OT_6 | GPIO_OTYPER_OT_7; //open drain
-  //GPIOB->OSPEEDR |= /*I2C1*/ GPIO_OSPEEDER_OSPEEDR6 | GPIO_OSPEEDER_OSPEEDR7;
-  //GPIOB->PUPDR |= /*I2C1*/ GPIO_PUPDR_PUPDR6_0 | GPIO_PUPDR_PUPDR7_0; //pull up
-  //GPIOB->AFR[0] |= (0x4 << 24) | (0x4 << 28);
   
   RCC->APB1ENR |= RCC_APB1ENR_I2C1EN;
   RCC->APB1RSTR |= RCC_APB1RSTR_I2C1RST;
   RCC->APB1RSTR &= ~RCC_APB1RSTR_I2C1RST;
   
   I2C1->CR2 |= I2C_CR2_ITBUFEN | I2C_CR2_ITEVTEN | I2C_CR2_ITERREN | I2C_CR2_FREQ_3 /*changes if PCLK1 changes*/;
-  I2C1->CCR |= 40; /*changes if PCLK1 changes*/
-  I2C1->TRISE = 9; /*changes if PCLK1 changes*/
+  I2C1->CCR |= 7 /*40 for 100kHz*/ | I2C_CCR_FS; /*changes if PCLK1 or bus frequency changes*/
+  I2C1->TRISE = 3; /*9 for 100kHz*/ /*changes if PCLK1 or bus frequency changes*/
   I2C1->CR1 |= I2C_CR1_PE | I2C_CR1_ACK;
 }
 
