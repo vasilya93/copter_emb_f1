@@ -10,6 +10,7 @@
 #include "PWM.h"
 #include "sensors_fusion.h"
 #include "controller.h"
+#include "helper.h"
 
 #define NELEMS(x)  (sizeof(x) / sizeof(x[0]))
 
@@ -34,6 +35,8 @@ void begin_wire(void);
 void init_pwm(void);
 /*void switch_pwm(void);*/
 
+//PA11 - lowest pwm pin
+
 int main(void)
 {
   init_all();
@@ -44,8 +47,9 @@ int main(void)
 void init_all(void)
 {
   ClockControl_Initialize();
-  Serial_Begin(57600);
-  pwm_begin();
+  Serial_Begin(111111);
+  //pwm_begin();
+  helper_pulse_init();
   Messenger_Initialize(&start_operation, MSNR_MODE_5BYTE);
   messenger_attach_pwm(&pwm_set);
   
@@ -53,26 +57,13 @@ void init_all(void)
   MPU6050_Initialize();
   //HMC5883_initialize();
   sensors_fusion_init(SENSFUS_ST_CALIBRATE_GYRO | SENSFUS_ST_CALIBRATE_ACCEL);
-  controller_init();
-  
-  
-  //receiving first data from gyro doesn't reset i2c busy flag 
-  //the last receiving doesn't end up logically
-  //says nothing in the end; doesn't complete the operation; doesn't end with receiving two bytes or 
-  
-  //RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
-  //GPIOA->CRL |= GPIO_CRL_MODE0_1 | GPIO_CRL_MODE1_1 | GPIO_CRL_MODE3_1 | GPIO_CRL_MODE4_1;
-  //GPIOA->CRL &= ~(GPIO_CRL_CNF0 | GPIO_CRL_CNF1 | GPIO_CRL_CNF3 | GPIO_CRL_CNF4);
-  //GPIOA->ODR &= ~(GPIO_ODR_ODR0 | GPIO_ODR_ODR1 | GPIO_ODR_ODR3 | GPIO_ODR_ODR4);
-  
-  //Timer_init(TIMER6);
-  //Timer_start(TIMER6, toggle_led, 1000000, false);
+  //controller_init();
 }
 
 void start_operation(void)
 {
   Timer_init(TIMER6);
-  Timer_start(TIMER6, begin_wire, 10000, true);
+  Timer_start(TIMER6, begin_wire, 5000, true);
 }
 
 void delay(unsigned int cycles_num)
@@ -104,6 +95,11 @@ void check_USART(void)
 
 void check_serial(void)
 {
+  Serial_WriteLine("Hello world!\n");
+  Serial_WriteLine("Hello world!\n");
+  Serial_WriteLine("Hello world!\n");
+  Serial_WriteLine("Hello world!\n");
+  Serial_WriteLine("Hello world!\n");
   Serial_WriteLine("Hello world!\n");
 }
 

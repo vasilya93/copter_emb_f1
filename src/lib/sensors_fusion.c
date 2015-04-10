@@ -4,6 +4,7 @@
 #include "MPU6050.h"
 #include "Messenger.h"
 #include "vector.h"
+#include "helper.h"
 
 static float roll_current;
 static float pitch_current;
@@ -165,7 +166,9 @@ void perform_fusion()
   
   if (new_pos_handler != NULL) {
     new_pos_handler(roll_current, pitch_current, yaw_current);
-  }    
+  }
+  
+  helper_pulse();
 }
 
 /*void gyro_calibrate(int16_t value, coordinate_t coord)
