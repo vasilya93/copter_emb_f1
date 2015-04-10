@@ -52,7 +52,7 @@ bool Timer_start(uint8_t timer, void (*handler)(), uint32_t useconds, bool do_re
     timer_ref = &timer6;
     timer_settings = TIM6;
     break;
-  case 2:
+  case TIMER7:
     timer_ref = &timer7;
     timer_settings = TIM7;
     break;
