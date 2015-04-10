@@ -45,20 +45,6 @@ uint8_t* MPU6050_GetNextInitOperation(uint16_t currentDataDescript, I2C_OpDescri
   uint8_t *data;
   
   switch(currentDataDescript) {
-    /*case WIRE_DD_NODATA:
-    I2C_SetOpDescription(opDescript, MPU6050_DD_PWRMGMT1DATAREQ, MPU6050_ADDRESS, false, 1);
-    data = (uint8_t*) malloc(1);
-    data[0] = MPU6050_RA_PWRMGMT1;
-    return data;
-  case MPU6050_DD_PWRMGMT1DATAREQ:
-    I2C_SetOpDescription(opDescript, MPU6050_DD_PWRMGMT1DATAOUT, MPU6050_ADDRESS, true, 1);
-    return NULL;
-  case MPU6050_DD_PWRMGMT1DATAOUT:
-    I2C_SetOpDescription(opDescript, MPU6050_DD_PWRMGMT1DATAIN, MPU6050_ADDRESS, false, 2);
-    data = (uint8_t*) malloc(2);
-    data[0] = MPU6050_RA_PWRMGMT1;
-    data[1] = 0;
-    return data;*/
   case WIRE_DD_NODATA:
     I2C_SetOpDescription(opDescript, MPU6050_DD_SMPRTDIVDATAIN, MPU6050_ADDRESS, false, 2);
     data = (uint8_t*) malloc(2);
@@ -75,13 +61,19 @@ uint8_t* MPU6050_GetNextInitOperation(uint16_t currentDataDescript, I2C_OpDescri
     I2C_SetOpDescription(opDescript, MPU6050_DD_GYROCONFIGDATAIN, MPU6050_ADDRESS, false, 2);
     data = (uint8_t*) malloc(2);
     data[0] = MPU6050_RA_GYROCONFIG;
-    data[1] = 0x08; //500 deg/s
+    data[1] = 0x00; //0x00 - 250 deg/s
+                    //0x08 - 500 deg/s
+                    //0x10 - 1000 deg/s
+                    //0x18 - 2000 deg/s
     return data;
   case MPU6050_DD_GYROCONFIGDATAIN:
     I2C_SetOpDescription(opDescript, MPU6050_DD_ACCELCONFIGDATAIN, MPU6050_ADDRESS, false, 2);
     data = (uint8_t*) malloc(2);
     data[0] = MPU6050_RA_ACCELCONFIG;
-    data[1] = 0x00;
+    data[1] = 0x00; //0x00 - +-2g
+                    //0x08 - +-4g
+                    //0x10 - +-8g
+                    //0x18 - +-16g
     return data;
   case MPU6050_DD_ACCELCONFIGDATAIN:
     I2C_SetOpDescription(opDescript, MPU6050_DD_MOTTHRDATAIN, MPU6050_ADDRESS, false, 2);
@@ -261,7 +253,7 @@ uint8_t* MPU6050_GetNextInitOperation(uint16_t currentDataDescript, I2C_OpDescri
 uint8_t* MPU6050_GetNextRegOperation(uint16_t currentDataDescript, I2C_OpDescript_Type* opDescript)
 {
   uint8_t *data;
-  
+
   switch(currentDataDescript) {
     /*case WIRE_DD_NODATA:
     I2C_SetOpDescription(opDescript, MPU6050_DD_WHOAMIREQ, MPU6050_ADDRESS, false, 1);
@@ -280,6 +272,7 @@ uint8_t* MPU6050_GetNextRegOperation(uint16_t currentDataDescript, I2C_OpDescrip
   case MPU6050_DD_PWRMGMT1DATAREQ:
     I2C_SetOpDescription(opDescript, MPU6050_DD_PWRMGMT1DATAOUT, MPU6050_ADDRESS, true, 1);
     return NULL;*/
+
   case WIRE_DD_NODATA:
     I2C_SetOpDescription(opDescript, MPU6050_DD_ACCELXREQ, MPU6050_ADDRESS, false, 1);
     data = (uint8_t*) malloc(1);
@@ -347,6 +340,10 @@ void MPU6050_ProcessOperationResult(I2C_Operation_Type* operation)
     Messenger_SendByte(MPU6050_MSG_WHOAMI);
     Messenger_SendWord((uint16_t)MPU6050_Data.tmp, MSNR_DD_WHOAMI);
     break;
+  case MPU6050_DD_GYROCONFIGDATAOUT:
+    MPU6050_Data.tmp = operation->Bytes[0];
+    Messenger_SendWord((uint16_t)MPU6050_Data.tmp, MSNR_DD_WHOAMI);
+    break;
   case MPU6050_DD_ACCELXDATA:
     set_accel_val((operation->Bytes[0] << 8) | operation->Bytes[1], COORDINATE_X);
     break;
@@ -374,19 +371,19 @@ void set_gyro_val(int16_t value, coordinate_t coord)
 {  
   switch (coord) {
   case COORDINATE_X:
-    //Messenger_SendWord(MPU6050_Data.gyrox, MSNR_DD_ANGSPEEDX);
+    Messenger_SendWord(MPU6050_Data.gyrox, MSNR_DD_ANGSPEEDX);
     MPU6050_Data.gyrox = value;
     MPU6050_Data.renew_state |= MPU6050_GYROX_RENEWED;
     gyro_check_renew_state();
     break;
   case COORDINATE_Y:
-    //Messenger_SendWord(MPU6050_Data.gyroy, MSNR_DD_ANGSPEEDY);
+    Messenger_SendWord(MPU6050_Data.gyroy, MSNR_DD_ANGSPEEDY);
     MPU6050_Data.gyroy = value;
     MPU6050_Data.renew_state |= MPU6050_GYROY_RENEWED;
     gyro_check_renew_state();
     break;
   case COORDINATE_Z:
-    //Messenger_SendWord(MPU6050_Data.gyroz, MSNR_DD_ANGSPEEDZ);
+    Messenger_SendWord(MPU6050_Data.gyroz, MSNR_DD_ANGSPEEDZ);
     MPU6050_Data.gyroz = value;
     MPU6050_Data.renew_state |= MPU6050_GYROZ_RENEWED;
     gyro_check_renew_state();
@@ -398,19 +395,19 @@ void set_accel_val(int16_t value, coordinate_t coord)
 {
   switch (coord) {
   case COORDINATE_X:
-    //Messenger_SendWord(MPU6050_Data.accelx, MSNR_DD_ACCELX);
+    Messenger_SendWord(MPU6050_Data.accelx, MSNR_DD_ACCELX);
     MPU6050_Data.accelx = value;
     MPU6050_Data.renew_state |= MPU6050_ACCELX_RENEWED;
     accel_check_renew_state();
     break;
   case COORDINATE_Y:
-    //Messenger_SendWord(MPU6050_Data.accely, MSNR_DD_ACCELY);
+    Messenger_SendWord(MPU6050_Data.accely, MSNR_DD_ACCELY);
     MPU6050_Data.accely = value;
     MPU6050_Data.renew_state |= MPU6050_ACCELY_RENEWED;
     accel_check_renew_state();
     break;
   case COORDINATE_Z:
-    //Messenger_SendWord(MPU6050_Data.accelz, MSNR_DD_ACCELZ);
+    Messenger_SendWord(MPU6050_Data.accelz, MSNR_DD_ACCELZ);
     MPU6050_Data.accelz = value;
     MPU6050_Data.renew_state |= MPU6050_ACCELZ_RENEWED;
     accel_check_renew_state();
