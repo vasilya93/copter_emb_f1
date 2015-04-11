@@ -4,6 +4,7 @@
 #include "stdlib.h"
 #include "Serial.h"
 #include "Messenger.h"
+#include "settings.h"
 
 #define MPU6050_ACCELX_RENEWED	0x01
 #define MPU6050_ACCELY_RENEWED	0x02
@@ -371,19 +372,25 @@ void set_gyro_val(int16_t value, coordinate_t coord)
 {  
   switch (coord) {
   case COORDINATE_X:
+#ifdef SEND_RAW_GYRO
     Messenger_SendWord(MPU6050_Data.gyrox, MSNR_DD_ANGSPEEDX);
+#endif
     MPU6050_Data.gyrox = value;
     MPU6050_Data.renew_state |= MPU6050_GYROX_RENEWED;
     gyro_check_renew_state();
     break;
   case COORDINATE_Y:
+#ifdef SEND_RAW_GYRO
     Messenger_SendWord(MPU6050_Data.gyroy, MSNR_DD_ANGSPEEDY);
+#endif
     MPU6050_Data.gyroy = value;
     MPU6050_Data.renew_state |= MPU6050_GYROY_RENEWED;
     gyro_check_renew_state();
     break;
   case COORDINATE_Z:
+#ifdef SEND_RAW_GYRO
     Messenger_SendWord(MPU6050_Data.gyroz, MSNR_DD_ANGSPEEDZ);
+#endif
     MPU6050_Data.gyroz = value;
     MPU6050_Data.renew_state |= MPU6050_GYROZ_RENEWED;
     gyro_check_renew_state();
@@ -395,19 +402,25 @@ void set_accel_val(int16_t value, coordinate_t coord)
 {
   switch (coord) {
   case COORDINATE_X:
+#ifdef SEND_RAW_ACC
     Messenger_SendWord(MPU6050_Data.accelx, MSNR_DD_ACCELX);
+#endif
     MPU6050_Data.accelx = value;
     MPU6050_Data.renew_state |= MPU6050_ACCELX_RENEWED;
     accel_check_renew_state();
     break;
   case COORDINATE_Y:
+#ifdef SEND_RAW_ACC
     Messenger_SendWord(MPU6050_Data.accely, MSNR_DD_ACCELY);
+#endif
     MPU6050_Data.accely = value;
     MPU6050_Data.renew_state |= MPU6050_ACCELY_RENEWED;
     accel_check_renew_state();
     break;
   case COORDINATE_Z:
+#ifdef SEND_RAW_ACC
     Messenger_SendWord(MPU6050_Data.accelz, MSNR_DD_ACCELZ);
+#endif
     MPU6050_Data.accelz = value;
     MPU6050_Data.renew_state |= MPU6050_ACCELZ_RENEWED;
     accel_check_renew_state();

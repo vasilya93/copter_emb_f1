@@ -1,10 +1,9 @@
-#include "stdbool.h"
-#include "stdint.h"
-
 #ifndef USART_H
 #define USART_H
 
-//#define USE_USART3
+#include "stdbool.h"
+#include "stdint.h"
+#include "settings.h"
 
 #ifdef USE_USART3
 #define USART_CURRENT USART3
