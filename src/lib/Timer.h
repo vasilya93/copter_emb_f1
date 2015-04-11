@@ -1,8 +1,8 @@
-#include "stdint.h"
-#include "stdbool.h"
-
 #ifndef TIMER_H
 #define TIMER_H
+
+#include "stdint.h"
+#include "stdbool.h"
 
 #define TIMER6 6
 #define TIMER7 7

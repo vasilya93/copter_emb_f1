@@ -1,7 +1,7 @@
-#include "Serial.h"
-
 #ifndef MESSENGER_H
 #define MESSENGER_H
+
+#include "Serial.h"
 
 #define MSNR_MT_BYTE 0x01
 #define MSNR_MT_WORD 0x02

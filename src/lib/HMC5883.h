@@ -1,8 +1,8 @@
-#include "Wire.h"
-#include "stdint.h"
-
 #ifndef HMC5883_H
 #define HMC5883_H
+
+#include "Wire.h"
+#include "stdint.h"
 
 #define HMC5883_ADDRESS 0x1E
 

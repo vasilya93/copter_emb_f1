@@ -1,8 +1,8 @@
-#include "Wire.h"
-#include "stdint.h"
-
 #ifndef MPU6050_H
 #define MPU6050_H
+
+#include "Wire.h"
+#include "stdint.h"
 
 #define MPU6050_ADDRESS 0x68
 
