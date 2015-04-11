@@ -3,13 +3,13 @@
 
 ClockControlType ClockControl;
 
-void ClockControl_Initialize()
+void clkcontrol_inithsi(void)
 {  
-  //enable MSI
+  //enable HSI
   RCC->CR |= RCC_CR_HSION;
   while(~RCC->CR & RCC_CR_HSIRDY);
   
-  //run MSI as SYSCLK
+  //run HSI as SYSCLK
   RCC->CFGR &= ~(RCC_CFGR_SW);
   while(RCC->CFGR & RCC_CFGR_SWS);
   
@@ -34,6 +34,53 @@ void ClockControl_Initialize()
   RCC->CFGR &= ~(RCC_CFGR_SW);
   RCC->CFGR |= RCC_CFGR_SW_PLL;
   while(~RCC->CFGR & RCC_CFGR_SWS_PLL);
+
+  ClockControl.APB1_Frequency = 8000000; // if changes, clock tuning in I2C should be changed 
+  ClockControl.APB2_Frequency = 8000000;
+  ClockControl.AHB_Frequency = 32000000;
+  ClockControl.SYSCLK_Frequency = 32000000;
+}
+
+
+void clkcontrol_inithse(void)
+{
+  //enable HSI
+  RCC->CR |= RCC_CR_HSION;
+  while(~RCC->CR & RCC_CR_HSIRDY);
+  
+  //run HSI as SYSCLK
+  RCC->CFGR &= ~(RCC_CFGR_SW);
+  while(RCC->CFGR & RCC_CFGR_SWS);
+  
+  RCC->CR |= RCC_CR_HSEON;
+  while(~RCC->CR & RCC_CR_HSERDY);
+  
+  //disable PLL to configure it
+  RCC->CR &= ~RCC_CR_PLLON;
+  while(RCC->CR & RCC_CR_PLLRDY);
+
+  RCC->CFGR |= RCC_CFGR_PLLSRC; //HSE
+  RCC->CFGR &= ~RCC_CFGR_PLLXTPRE;
+  RCC->CFGR &= ~RCC_CFGR_PLLMULL;
+  RCC->CFGR |= RCC_CFGR_PLLMULL_1; //multiply by 4
+  RCC->CFGR &= ~RCC_CFGR_HPRE;
+  RCC->CFGR &= ~RCC_CFGR_PPRE1;
+  RCC->CFGR |= RCC_CFGR_PPRE1_0 | RCC_CFGR_PPRE1_2; //devide by 4
+  RCC->CFGR &= ~RCC_CFGR_PPRE2;
+  RCC->CFGR |= RCC_CFGR_PPRE2_0 | RCC_CFGR_PPRE2_2; //devide by 4
+
+  //enable PLL
+  RCC->CR |= RCC_CR_PLLON;
+  while(~RCC->CR & RCC_CR_PLLRDY);
+  
+  //run PLL as SYSCLK
+  RCC->CFGR &= ~(RCC_CFGR_SW);
+  RCC->CFGR |= RCC_CFGR_SW_PLL;
+  while(~RCC->CFGR & RCC_CFGR_SWS_PLL);
+  
+  //disable HSI
+  RCC->CR &= ~RCC_CR_HSION;
+  while(RCC->CR & RCC_CR_HSIRDY);
 
   ClockControl.APB1_Frequency = 8000000; // if changes, clock tuning in I2C should be changed 
   ClockControl.APB2_Frequency = 8000000;

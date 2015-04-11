@@ -35,8 +35,6 @@ void begin_wire(void);
 void init_pwm(void);
 /*void switch_pwm(void);*/
 
-//PA11 - lowest pwm pin
-
 int main(void)
 {
   init_all();
@@ -46,7 +44,7 @@ int main(void)
 
 void init_all(void)
 {
-  ClockControl_Initialize();
+  clkcontrol_inithse();
   Serial_Begin(111111);
   //pwm_begin();
   helper_pulse_init();
@@ -56,14 +54,14 @@ void init_all(void)
   Wire_Initialize();
   MPU6050_Initialize();
   //HMC5883_initialize();
-  sensors_fusion_init(SENSFUS_ST_CALIBRATE_GYRO | SENSFUS_ST_CALIBRATE_ACCEL);
+  //sensors_fusion_init(SENSFUS_ST_CALIBRATE_GYRO | SENSFUS_ST_CALIBRATE_ACCEL);
   //controller_init();
 }
 
 void start_operation(void)
 {
   Timer_init(TIMER6);
-  Timer_start(TIMER6, begin_wire, 5000, true);
+  Timer_start(TIMER6, /*begin_wire helper_pulse*/ check_serial, 1000000, true);
 }
 
 void delay(unsigned int cycles_num)
@@ -95,11 +93,6 @@ void check_USART(void)
 
 void check_serial(void)
 {
-  Serial_WriteLine("Hello world!\n");
-  Serial_WriteLine("Hello world!\n");
-  Serial_WriteLine("Hello world!\n");
-  Serial_WriteLine("Hello world!\n");
-  Serial_WriteLine("Hello world!\n");
   Serial_WriteLine("Hello world!\n");
 }
 

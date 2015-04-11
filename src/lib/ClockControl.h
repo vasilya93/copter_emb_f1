@@ -11,6 +11,7 @@ typedef struct ClockControlType
 
 extern ClockControlType ClockControl;
 
-void ClockControl_Initialize(void);
+void clkcontrol_inithsi(void);
+void clkcontrol_inithse(void);
 
 #endif
