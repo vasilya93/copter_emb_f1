@@ -94,10 +94,17 @@ int fifo_reset(fifo_t *fifo)
 
 uint8_t *fifo_get_array(fifo_t *fifo, uint16_t *size)
 {
+  if (fifo == NULL) {
+    if (size != NULL)
+      *size = 0;
+    return NULL;
+  }
+
   uint16_t left_to_end;
   uint16_t elems_count = fifo->size - fifo->free_elems;
   uint8_t *array = malloc(elems_count);  
-  if (fifo == NULL) {
+
+  if (array == NULL) {
     if (size != NULL)
       *size = 0;
     return NULL;
