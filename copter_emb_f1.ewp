@@ -99,7 +99,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>STM32F100x6	ST STM32F100x6</state>
+          <state>STM32F103x8	ST STM32F103x8</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -168,7 +168,7 @@
         </option>
         <option>
           <name>CCDefines</name>
-          <state>STM32F10X_MD_VL</state>
+          <state>STM32F10X_MD</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -320,7 +320,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -329,7 +329,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CompilerMisraRules98</name>
@@ -1866,10 +1866,31 @@
         <name>$PROJ_DIR$\src\lib\ClockControl.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\src\lib\controller.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\controller.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\src\lib\fifo.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\src\lib\fifo.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\fifo_impl.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\fifo_int16.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\fifo_int16.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\helper.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\helper.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\src\lib\HMC5883.c</name>
@@ -1884,13 +1905,16 @@
         <name>$PROJ_DIR$\src\lib\I2C.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\src\lib\linmath.h</name>
-      </file>
-      <file>
         <name>$PROJ_DIR$\src\lib\Messenger.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\src\lib\Messenger.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\motors.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\motors.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\src\lib\MPU6050.c</name>
@@ -1917,6 +1941,9 @@
         <name>$PROJ_DIR$\src\lib\Serial.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\src\lib\settings.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\src\lib\Timer.c</name>
       </file>
       <file>
@@ -1927,6 +1954,12 @@
       </file>
       <file>
         <name>$PROJ_DIR$\src\lib\USART.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\vector.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\lib\vector.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\src\lib\Wire.c</name>

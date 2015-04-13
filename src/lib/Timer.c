@@ -3,14 +3,14 @@
 #include "Timer.h"
 #include "ClockControl.h"
 
-timer_t timer6 = {
+timer_t timer2 = {
   NULL,
   false,
   false,
   false
 };
 
-timer_t timer7  = {
+timer_t timer4  = {
   NULL,
   false,
   false,
@@ -20,15 +20,15 @@ timer_t timer7  = {
 void Timer_init(uint8_t timer)
 {
   switch (timer) {
-  case TIMER6:
-    timer6.is_initialized = true;
-    NVIC_EnableIRQ(TIM6_DAC_IRQn);
-    RCC->APB1ENR |= RCC_APB1ENR_TIM6EN;
+  case TIMER4:
+    timer4.is_initialized = true;
+    NVIC_EnableIRQ(TIM4_IRQn);
+    RCC->APB1ENR |= RCC_APB1ENR_TIM4EN;
     break;
-  case TIMER7:
-    timer7.is_initialized = true;
-    NVIC_EnableIRQ(TIM7_IRQn);
-    RCC->APB1ENR |= RCC_APB1ENR_TIM7EN;
+  case TIMER2:
+    timer2.is_initialized = true;
+    NVIC_EnableIRQ(TIM2_IRQn);
+    RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;
     break;
   default:
     return;
@@ -48,13 +48,13 @@ bool Timer_start(uint8_t timer, void (*handler)(), uint32_t useconds, bool do_re
     return false;
   
   switch(timer) {
-  case TIMER6:
-    timer_ref = &timer6;
-    timer_settings = TIM6;
+  case TIMER2:
+    timer_ref = &timer2;
+    timer_settings = TIM2;
     break;
-  case TIMER7:
-    timer_ref = &timer7;
-    timer_settings = TIM7;
+  case TIMER4:
+    timer_ref = &timer4;
+    timer_settings = TIM4;
     break;
   default:
     return false;
@@ -87,30 +87,30 @@ bool Timer_start(uint8_t timer, void (*handler)(), uint32_t useconds, bool do_re
 
 //-----------------------------Handlers-----------------------------------------
 
-void TIM6_DAC_IRQHandler(void)
+void TIM2_IRQHandler(void)
 {  
-  TIM6->SR &= ~TIM_SR_UIF;
-  if (!timer6.do_repeat) {
-    TIM6->DIER &= ~TIM_DIER_UIE;
-    TIM6->CR1 &= ~TIM_CR1_CEN;
-    TIM6->CNT = 0;
-    timer6.is_busy = false;
+  TIM2->SR &= ~TIM_SR_UIF;
+  if (!timer2.do_repeat) {
+    TIM2->DIER &= ~TIM_DIER_UIE;
+    TIM2->CR1 &= ~TIM_CR1_CEN;
+    TIM2->CNT = 0;
+    timer2.is_busy = false;
   }
-  if (timer6.handler != NULL) {
-    timer6.handler();
+  if (timer2.handler != NULL) {
+    timer2.handler();
   }
 }
 
-void TIM7_IRQHandler(void)
+void TIM4_IRQHandler(void)
 {  
-  TIM7->SR &= ~TIM_SR_UIF;
-  if (!timer7.do_repeat) {
-    TIM7->DIER &= ~TIM_DIER_UIE;
-    TIM7->CR1 &= ~TIM_CR1_CEN;
-    TIM7->CNT = 0;
-    timer7.is_busy = false;
+  TIM4->SR &= ~TIM_SR_UIF;
+  if (!timer4.do_repeat) {
+    TIM4->DIER &= ~TIM_DIER_UIE;
+    TIM4->CR1 &= ~TIM_CR1_CEN;
+    TIM4->CNT = 0;
+    timer4.is_busy = false;
   }
-  if (timer7.handler != NULL) {
-    timer7.handler();
+  if (timer4.handler != NULL) {
+    timer4.handler();
   }
 }

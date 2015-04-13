@@ -6,7 +6,6 @@
 #include "Messenger.h"
 #include "Wire.h"
 #include "MPU6050.h"
-#include "HMC5883.h"
 #include "PWM.h"
 #include "sensors_fusion.h"
 #include "controller.h"
@@ -60,8 +59,8 @@ void init_all(void)
 
 void start_operation(void)
 {
-  Timer_init(TIMER6);
-  Timer_start(TIMER6, /*begin_wire helper_pulse*/ check_serial, 1000000, true);
+  Timer_init(TIMER2);
+  Timer_start(TIMER2, begin_wire /*helper_pulse check_serial*/, 5000, true);
 }
 
 void delay(unsigned int cycles_num)
@@ -82,7 +81,7 @@ void toggle_led(void)
     led_state = 1;
     GPIOA->ODR |= GPIO_ODR_ODR0 | GPIO_ODR_ODR1 |
                   GPIO_ODR_ODR3 | GPIO_ODR_ODR4;
-    Timer_start(TIMER6, toggle_led, 1000000, false);
+    Timer_start(TIMER2, toggle_led, 1000000, false);
   }
 }
 

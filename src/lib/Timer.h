@@ -4,11 +4,11 @@
 #include "stdint.h"
 #include "stdbool.h"
 
-#define TIMER6 6
-#define TIMER7 7
+#define TIMER2 2
+#define TIMER4 4
 #define TIMER_USECONDS_MAX 60000000
 
-//timer6 and timer7 are on apb1 bus
+//timer2 and timer4 are on apb1 bus
 
 typedef struct timer_t
 {
