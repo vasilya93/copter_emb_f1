@@ -10,7 +10,9 @@ int fifo_int16_initialize(fifo_int16_t *fifo, uint16_t size)
   fifo->array = malloc(size * sizeof(int16_t));
   if (fifo->array == NULL)
     return 1;
-  
+
+  memset(fifo->array, 0, size * sizeof(uint16_t));
+
   fifo->size = size;
   fifo->free_elems = size;
   fifo->index_first = 0;
@@ -91,6 +93,7 @@ int fifo_int16_reset(fifo_int16_t *fifo)
   if (fifo == NULL)
     return 1;
 
+  memset(fifo->array, 0, fifo->size * sizeof(uint16_t));
   fifo->free_elems = fifo->size;
   fifo->index_first = 0;
   fifo->index_last = 0;

@@ -5,6 +5,7 @@
 #include "Messenger.h"
 #include "vector.h"
 #include "helper.h"
+#include "settings.h"
 
 static float roll_current;
 static float pitch_current;
@@ -17,22 +18,22 @@ static vector_t vector_K_tied_previous = {0, 0, 1};
 static vector_t vector_K_tied_current = {0, 0, 0};
 static vector_t vector_gyro = {0, 0, 0};
 
-void accel_received_callback(int16_t accelx, int16_t accely, int16_t accelz);
-void gyro_received_callback(int16_t gyrox, int16_t gyroy, int16_t gyroz);
-inline void check_renew_state();
-void perform_fusion();
-inline void normalize_acc();
-
-void sensors_fusion_init(uint16_t stat)
+void sensfus_init()
 {
   MPU6050_attach_accel_handler(&accel_received_callback);
   MPU6050_attach_gyro_handler(&gyro_received_callback);
   
-  if (stat & SENSFUS_ST_CALIBRATE_GYRO)
-    sensfus_stat |= SENSFUS_ST_CALIBRATE_GYRO;
+  fifo_int16_initialize(&fifo_accx, SETTINGS_SENSFUS_SIZE_FILTER_ACCEL);
+  fifo_int16_initialize(&fifo_accy, SETTINGS_SENSFUS_SIZE_FILTER_ACCEL);
+  fifo_int16_initialize(&fifo_accz, SETTINGS_SENSFUS_SIZE_FILTER_ACCEL);
 
-  if (stat & SENSFUS_ST_CALIBRATE_ACCEL)
-    sensfus_stat |= SENSFUS_ST_CALIBRATE_ACCEL;
+  fifo_int16_initialize(&fifo_gyrox, SETTINGS_SENSFUS_SIZE_FILTER_GYRO);
+  fifo_int16_initialize(&fifo_gyroy, SETTINGS_SENSFUS_SIZE_FILTER_GYRO);
+  fifo_int16_initialize(&fifo_gyroz, SETTINGS_SENSFUS_SIZE_FILTER_GYRO);
+  
+#ifdef SETTINGS_SENSFUS_FILTER_MEDIAN
+  static uint16_t *array_median = NULL;
+#endif
 }
 
 void sensfus_attach_handler(void(*new_handler)(float, float, float))
@@ -42,71 +43,87 @@ void sensfus_attach_handler(void(*new_handler)(float, float, float))
 
 void accel_received_callback(int16_t accelx, int16_t accely, int16_t accelz)
 {
-  if ((sensfus_stat & SENSFUS_ST_ACCCBTD) ||
-      (~sensfus_stat & SENSFUS_ST_CALIBRATE_ACCEL)) {
-     sensfus_setacc(accelx, accely, accelz);
+#ifdef SETTINGS_SENSFUS_CALIBRATE_ACC
+  if (~sensfus_stat & SENSFUS_ST_ACCCBTD) {
+     calibrateacc(accelx, accely, accelz);
      return;
   }
+#endif
 
-  sensfus_calibrateacc(accelx, accely, accelz);
+  setacc(accelx, accely, accelz);
 }
 
-static void sensfus_setacc(int16_t accx, int16_t accy, int16_t accz)
+static void setacc(int16_t accx, int16_t accy, int16_t accz)
 {
-  vector_K_tied_current.x = (float)(accx + accelx_offset);
-  vector_K_tied_current.y = (float)(accy + accely_offset);
-  vector_K_tied_current.z = (float)(accz + accelz_offset);
+  vector_K_tied_current.x = perform_filtration(accx + accelx_offset, &fifo_accx);
+  vector_K_tied_current.y = perform_filtration(accy + accely_offset, &fifo_accy);
+  vector_K_tied_current.z = perform_filtration(accz + accelz_offset, &fifo_accz);
   sensfus_stat |= SENSFUS_ACC_RENEWED;
+#ifdef SETTINGS_SENSFUS_SEND_FILTERED_ACC
+  Messenger_SendFloat(vector_K_tied_current.x, MSNR_DD_ACCELX);
+  Messenger_SendFloat(vector_K_tied_current.y, MSNR_DD_ACCELY);
+  Messenger_SendFloat(vector_K_tied_current.z, MSNR_DD_ACCELZ);
+#endif
   check_renew_state();
 }
 
-static void sensfus_calibrateacc(int16_t accx, int16_t accy, int16_t accz)
+#ifdef SETTINGS_SENSFUS_CALIBRATE_GYRO
+static void calibrateacc(int16_t accx, int16_t accy, int16_t accz)
 {  
   accelx_accum += accx;
   accely_accum += accy;
   accelz_accum += accz;
 
-  if (++accel_counter >= SENSFUS_CALIBRATION_CYCLES) {
+  if (++accel_counter >= SETTINGS_SENSFUS_CALIBRATION_CYCLES) {
     sensfus_stat |= SENSFUS_ST_ACCCBTD;
     accelx_offset = -accelx_accum / accel_counter;
     accely_offset = -accely_accum / accel_counter;
-    accelz_offset = SENSFUS_ACC_UNIT - accelz_accum / accel_counter;
+    accelz_offset = /*SENSFUS_ACC_UNIT*/ - accelz_accum / accel_counter;
   }
 }
+#endif
 
 void gyro_received_callback(int16_t gyrox, int16_t gyroy, int16_t gyroz)
 {
-  if ((sensfus_stat & SENSFUS_ST_GRCBTD) ||
-      (~sensfus_stat & SENSFUS_ST_CALIBRATE_GYRO)) {
-     sensfus_setgyro(gyrox, gyroy, gyroz);
+#ifdef SETTINGS_SENSFUS_CALIBRATE_GYRO
+  if (~sensfus_stat & SENSFUS_ST_GRCBTD) {
+     calibrategyro(gyrox, gyroy, gyroz);
      return;
   }
-  
-  sensfus_calibrategyro(gyrox, gyroy, gyroz);
+#endif
+
+  setgyro(gyrox, gyroy, gyroz);
 }
 
-static void sensfus_setgyro(int16_t gyrox, int16_t gyroy, int16_t gyroz)
+static void setgyro(int16_t gyrox, int16_t gyroy, int16_t gyroz)
 {
-  vector_gyro.x = gyrox + gyrox_offset;
-  vector_gyro.y = gyroy + gyroy_offset;
-  vector_gyro.z = gyroz + gyroz_offset;
+  vector_gyro.x = perform_filtration(gyrox + gyrox_offset, &fifo_gyrox);
+  vector_gyro.y = perform_filtration(gyroy + gyroy_offset, &fifo_gyroy);
+  vector_gyro.z = perform_filtration(gyroz + gyroz_offset, &fifo_gyroz);
   sensfus_stat |= SENSFUS_GYRO_RENEWED;
+#ifdef SETTINGS_SENSFUS_SEND_FILTERED_GYRO
+  Messenger_SendFloat(vector_gyro.x, MSNR_DD_ANGSPEEDX);
+  Messenger_SendFloat(vector_gyro.y, MSNR_DD_ANGSPEEDY);
+  Messenger_SendFloat(vector_gyro.z, MSNR_DD_ANGSPEEDZ);
+#endif
   check_renew_state();
 }
 
-static void sensfus_calibrategyro(int16_t gyrox, int16_t gyroy, int16_t gyroz)
+#ifdef SETTINGS_SENSFUS_CALIBRATE_GYRO
+static void calibrategyro(int16_t gyrox, int16_t gyroy, int16_t gyroz)
 {
   gyrox_accum += gyrox;
   gyroy_accum += gyroy;
   gyroz_accum += gyroz;
 
-  if (++gyro_counter >= SENSFUS_CALIBRATION_CYCLES) {
+  if (++gyro_counter >= SETTINGS_SENSFUS_CALIBRATION_CYCLES) {
     sensfus_stat |= SENSFUS_ST_GRCBTD;
     gyrox_offset = -gyrox_accum / gyro_counter;
     gyroy_offset = -gyroy_accum / gyro_counter;
     gyroz_offset = -gyroz_accum / gyro_counter;
   }
 }
+#endif
 
 void check_renew_state()
 {
@@ -171,42 +188,26 @@ void perform_fusion()
   helper_pulse();
 }
 
-/*void gyro_calibrate(int16_t value, coordinate_t coord)
+static float perform_filtration(int16_t value_new,
+                                fifo_int16_t *const fifo_values_last)
 {
-  int16_t *gyro_zero;
-  int32_t *accum;
-  uint16_t *counter;
-  uint8_t data_descr;
-  uint8_t coord_is_calibrated;
-  
-  switch (coord) {
-  case COORDINATE_X:
-    gyro_zero = &MPU6050_Data.gyrox_zero;
-    accum = &MPU6050_Data.gyrox_accum;
-    counter = &MPU6050_Data.x_counter;
-    data_descr = MSNR_DD_GYROXOFF;
-    coord_is_calibrated = MPU6050_ST_GRXCBTD;
-    break;
-  case COORDINATE_Y:
-    gyro_zero = &MPU6050_Data.gyroy_zero;
-    accum = &MPU6050_Data.gyroy_accum;
-    counter = &MPU6050_Data.y_counter;
-    data_descr = MSNR_DD_GYROYOFF;
-    coord_is_calibrated = MPU6050_ST_GRYCBTD;
-    break;
-  case COORDINATE_Z:
-    gyro_zero = &MPU6050_Data.gyroz_zero;
-    accum = &MPU6050_Data.gyroz_accum;
-    counter = &MPU6050_Data.z_counter;
-    data_descr = MSNR_DD_GYROZOFF;
-    coord_is_calibrated = MPU6050_ST_GRZCBTD;
-    break;
+#ifdef SETTINGS_SENSFUS_PERFORM_FILTRATION
+  fifo_int16_push(fifo_values_last, value_new);
+  return get_fifo_average(fifo_values_last);
+#else
+  return (float) value_new;
+#endif
+}
+
+static float get_fifo_average(const fifo_int16_t *const fifo)
+{
+  float result = 0;
+
+  for (uint16_t i = 0; i < fifo->size; i++) {
+    result += fifo->array[i];
   }
-  
-  *accum += value;
-  if (++(*counter) >= MPU6050_CALIBRATION_CYCLES) {
-    MPU6050_Data.state |= coord_is_calibrated;
-    *gyro_zero = *accum / *counter;
-    Messenger_SendWord(*gyro_zero, data_descr);
-  }
-}*/
+
+  result /= fifo->size;
+
+  return result;
+}

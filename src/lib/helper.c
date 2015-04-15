@@ -9,13 +9,13 @@ void helper_pulse_init(void)
   GPIOA->CRH |= GPIO_CRH_MODE11_1;
   GPIOA->ODR &= ~GPIO_ODR_ODR11;
 
-  Timer_init(TIMER2);
+  Timer_init(TIMER4);
 }
 
 void helper_pulse(void)
 {
   GPIOA->ODR |= GPIO_ODR_ODR11;
-  Timer_start(TIMER2, helper_pulse_off, 50, false);
+  Timer_start(TIMER4, helper_pulse_off, 50, false);
 }
 
 static void helper_pulse_off(void)

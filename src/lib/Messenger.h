@@ -44,17 +44,23 @@
 
 #define MSNR_STARTOP_PATTERN "start"
 
-typedef enum msnr_mode{
-	MSNR_MODE_5BYTE = 1,
-	MSNR_MODE_1BYTE
-}msnr_mode;
-
-void Messenger_Initialize(void (*start_operation)(void), msnr_mode mode);
+void msnr_init(void (*start_operation)(void));
 void messenger_attach_pwm(void (*callback)(uint8_t, uint16_t));
 void Messenger_SendByte(uint8_t);
+
+#ifndef SETTINGS_MSNR_1BYTE
 void Messenger_SendWord(uint16_t word, uint8_t data_descr);
+#endif
+
+#ifndef SETTINGS_MSNR_1BYTE
+#ifndef SETTINGS_MSNR_3BYTE
 void Messenger_SendDWord(uint32_t dword, uint8_t data_descr);
+#endif
+#endif
+
+#ifndef SETTINGS_MSNR_1BYTE
 void Messenger_SendFloat(float value, uint8_t data_descr);
+#endif
 
 static void messenger_parse_packet(uint8_t *packet);
 static void byte_received_handler(uint8_t rec_byte);

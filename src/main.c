@@ -15,14 +15,6 @@
 
 int led_state = 0;
 bool are_devs_init = false;
-/*uint32_t pwm_arr[]={250, 281, 313, 344, 375, 406, 437, 468, 499, 529, 559, 589, 618, 647, 676, 704,
-732, 759, 786, 812, 838, 863, 887, 911, 935, 957, 979, 1000, 1020, 1040, 1059, 1077,
-1094, 1111, 1126, 1141, 1155, 1168, 1180, 1191, 1201, 1210, 1219, 1226, 1232,
-1238, 1242, 1246, 1248, 1250, 1250, 1250, 1248, 1246, 1242, 1238, 1232, 1226,
-1219, 1210, 1201, 1191, 1180, 1168, 1155, 1141, 1126, 1111, 1094, 1077, 1059,
-1040, 1021, 1000, 979, 957, 935, 911, 887, 863, 838, 812, 786, 759, 732, 704, 676,
-647, 618, 589, 559, 529, 499, 468, 437, 407, 375, 344, 313, 282, 250};
-uint8_t pwm_counter = 0;*/
 
 void init_all(void);
 void delay(unsigned int cycles_num);
@@ -47,20 +39,20 @@ void init_all(void)
   Serial_Begin(111111);
   //pwm_begin();
   helper_pulse_init();
-  Messenger_Initialize(&start_operation, MSNR_MODE_5BYTE);
+  msnr_init(&start_operation);
   messenger_attach_pwm(&pwm_set);
   
   Wire_Initialize();
   MPU6050_Initialize();
   //HMC5883_initialize();
-  //sensors_fusion_init(SENSFUS_ST_CALIBRATE_GYRO | SENSFUS_ST_CALIBRATE_ACCEL);
+  sensfus_init();
   //controller_init();
 }
 
 void start_operation(void)
 {
   Timer_init(TIMER2);
-  Timer_start(TIMER2, begin_wire /*helper_pulse check_serial*/, 5000, true);
+  Timer_start(TIMER2, begin_wire /*helper_pulse check_serial*/, 100000, true);
 }
 
 void delay(unsigned int cycles_num)
@@ -97,6 +89,8 @@ void check_serial(void)
 
 void begin_wire(void)
 {
+  helper_pulse();
+
   if (are_devs_init) {
     Wire_BeginCycle();
     return;
