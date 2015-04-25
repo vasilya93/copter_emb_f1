@@ -5,6 +5,14 @@
 #include "stdint.h"
 
 #define MPU6050_ADDRESS 0x68
+#define MPU6050_RANGE 0xFFFF
+#define MPU6050_RANGE_FLOAT (65535.0f)
+#define GRAVITY_ACCELERATION (9.8f)
+
+#define DEG_500_TO_RAD 8.7266462599716
+#define DEG_1000_TO_RAD 17.453292519943
+#define DEG_2000_TO_RAD 34.906585039887
+#define DEG_4000_TO_RAD 69.813170079773
 
 //-----------------register addresses----------------------
 
@@ -157,6 +165,9 @@ void MPU6050_ProcessOperationResult(I2C_Operation_Type* operation);
 
 int MPU6050_attach_accel_handler(void (*new_handler)(int16_t, int16_t, int16_t));
 int MPU6050_attach_gyro_handler(void (*new_handler)(int16_t, int16_t, int16_t));
+
+float mpu6050_gyro_to_radpersec(float raw_gyro);
+float mpu6050_acc_to_meterpersqsec(float raw_acc);
 
 typedef struct MPU6050_Data_Type
 {

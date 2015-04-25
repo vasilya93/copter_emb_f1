@@ -62,19 +62,35 @@ uint8_t* MPU6050_GetNextInitOperation(uint16_t currentDataDescript, I2C_OpDescri
     I2C_SetOpDescription(opDescript, MPU6050_DD_GYROCONFIGDATAIN, MPU6050_ADDRESS, false, 2);
     data = (uint8_t*) malloc(2);
     data[0] = MPU6050_RA_GYROCONFIG;
-    data[1] = 0x00; //0x00 - 250 deg/s
-                    //0x08 - 500 deg/s
-                    //0x10 - 1000 deg/s
-                    //0x18 - 2000 deg/s
+#ifdef SETTINGS_MPU6050_GYRORANGE_250DEG
+    data[1] = 0x00; //+- 250 deg/s
+#endif
+#ifdef SETTINGS_MPU6050_GYRORANGE_500DEG
+    data[1] = 0x08; //+- 500 deg/s
+#endif
+#ifdef SETTINGS_MPU6050_GYRORANGE_1000DEG
+    data[1] = 0x10; //+- 1000 deg/s
+#endif
+#ifdef SETTINGS_MPU6050_GYRORANGE_2000DEG
+    data[1] = 0x18; //+- 2000 deg/s
+#endif
     return data;
   case MPU6050_DD_GYROCONFIGDATAIN:
     I2C_SetOpDescription(opDescript, MPU6050_DD_ACCELCONFIGDATAIN, MPU6050_ADDRESS, false, 2);
     data = (uint8_t*) malloc(2);
     data[0] = MPU6050_RA_ACCELCONFIG;
-    data[1] = 0x00; //0x00 - +-2g
-                    //0x08 - +-4g
-                    //0x10 - +-8g
-                    //0x18 - +-16g
+#ifdef SETTINGS_MPU6050_ACCRANGE_2G
+    data[1] = 0x00; //+-2g
+#endif
+#ifdef SETTINGS_MPU6050_ACCRANGE_4G
+    data[1] = 0x08; //+-4g
+#endif 
+#ifdef SETTINGS_MPU6050_ACCRANGE_8G
+    data[1] = 0x10; //+-8g
+#endif
+#ifdef SETTINGS_MPU6050_ACCRANGE_16G
+    data[1] = 0x18; //+-16g
+#endif
     return data;
   case MPU6050_DD_ACCELCONFIGDATAIN:
     I2C_SetOpDescription(opDescript, MPU6050_DD_MOTTHRDATAIN, MPU6050_ADDRESS, false, 2);
@@ -372,7 +388,7 @@ void set_gyro_val(int16_t value, coordinate_t coord)
 {  
   switch (coord) {
   case COORDINATE_X:
-#ifdef SEND_RAW_GYRO
+#ifdef SETTINGS_MPU6050_SEND_RAW_GYRO
     Messenger_SendWord(MPU6050_Data.gyrox, MSNR_DD_ANGSPEEDX);
 #endif
     MPU6050_Data.gyrox = value;
@@ -380,7 +396,7 @@ void set_gyro_val(int16_t value, coordinate_t coord)
     gyro_check_renew_state();
     break;
   case COORDINATE_Y:
-#ifdef SEND_RAW_GYRO
+#ifdef SETTINGS_MPU6050_SEND_RAW_GYRO
     Messenger_SendWord(MPU6050_Data.gyroy, MSNR_DD_ANGSPEEDY);
 #endif
     MPU6050_Data.gyroy = value;
@@ -388,7 +404,7 @@ void set_gyro_val(int16_t value, coordinate_t coord)
     gyro_check_renew_state();
     break;
   case COORDINATE_Z:
-#ifdef SEND_RAW_GYRO
+#ifdef SETTINGS_MPU6050_SEND_RAW_GYRO
     Messenger_SendWord(MPU6050_Data.gyroz, MSNR_DD_ANGSPEEDZ);
 #endif
     MPU6050_Data.gyroz = value;
@@ -402,7 +418,7 @@ void set_accel_val(int16_t value, coordinate_t coord)
 {
   switch (coord) {
   case COORDINATE_X:
-#ifdef SEND_RAW_ACC
+#ifdef SETTINGS_MPU6050_SEND_RAW_ACC
     Messenger_SendWord(MPU6050_Data.accelx, MSNR_DD_ACCELX);
 #endif
     MPU6050_Data.accelx = value;
@@ -410,7 +426,7 @@ void set_accel_val(int16_t value, coordinate_t coord)
     accel_check_renew_state();
     break;
   case COORDINATE_Y:
-#ifdef SEND_RAW_ACC
+#ifdef SETTINGS_MPU6050_SEND_RAW_ACC
     Messenger_SendWord(MPU6050_Data.accely, MSNR_DD_ACCELY);
 #endif
     MPU6050_Data.accely = value;
@@ -418,7 +434,7 @@ void set_accel_val(int16_t value, coordinate_t coord)
     accel_check_renew_state();
     break;
   case COORDINATE_Z:
-#ifdef SEND_RAW_ACC
+#ifdef SETTINGS_MPU6050_SEND_RAW_ACC
     Messenger_SendWord(MPU6050_Data.accelz, MSNR_DD_ACCELZ);
 #endif
     MPU6050_Data.accelz = value;
@@ -503,4 +519,36 @@ int MPU6050_attach_gyro_handler(void (*new_handler)(int16_t, int16_t, int16_t))
   MPU6050_Data.gyro_handlers[MPU6050_Data.gyro_handlers_num - 1] = new_handler;
   
   return 0;
+}
+
+float mpu6050_gyro_to_radpersec(float raw_gyro)
+{
+#ifdef SETTINGS_MPU6050_GYRORANGE_250DEG
+    return raw_gyro * DEG_500_TO_RAD / MPU6050_RANGE_FLOAT;
+#endif
+#ifdef SETTINGS_MPU6050_GYRORANGE_500DEG
+    return raw_gyro * DEG_1000_TO_RAD / MPU6050_RANGE_FLOAT;
+#endif
+#ifdef SETTINGS_MPU6050_GYRORANGE_1000DEG
+    return raw_gyro * DEG_2000_TO_RAD / MPU6050_RANGE_FLOAT;
+#endif
+#ifdef SETTINGS_MPU6050_GYRORANGE_2000DEG
+    return raw_gyro * DEG_4000_TO_RAD / MPU6050_RANGE_FLOAT;
+#endif
+}
+
+float mpu6050_acc_to_meterpersqsec(float raw_acc)
+{
+#ifdef SETTINGS_MPU6050_ACCRANGE_2G
+    return raw_acc * 4 * GRAVITY_ACCELERATION / MPU6050_RANGE_FLOAT;
+#endif
+#ifdef SETTINGS_MPU6050_ACCRANGE_4G
+    return raw_acc * 8 * GRAVITY_ACCELERATION / MPU6050_RANGE_FLOAT;
+#endif
+#ifdef SETTINGS_MPU6050_ACCRANGE_8G
+    return raw_acc * 16 * GRAVITY_ACCELERATION  / MPU6050_RANGE_FLOAT;
+#endif
+#ifdef SETTINGS_MPU6050_ACCRANGE_16G
+    return raw_acc * 32 * GRAVITY_ACCELERATION  / MPU6050_RANGE_FLOAT;
+#endif
 }

@@ -22,3 +22,13 @@ static void helper_pulse_off(void)
 {
   GPIOA->ODR &= ~GPIO_ODR_ODR11;
 }
+
+float helper_rad_to_deg(float angle)
+{
+  return angle / M_PI * 180.0;
+}
+
+float helper_deg_to_rad(float angle)
+{
+  return angle / 180.0 * M_PI;
+}

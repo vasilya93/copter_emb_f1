@@ -101,15 +101,22 @@ int fifo_int16_reset(fifo_int16_t *fifo)
   return 0;
 }
 
-int16_t *fifo_int16_get_array(fifo_int16_t *fifo, uint16_t *size)
+int fifo_int16_get_array(const fifo_int16_t *const fifo,
+                         int16_t *const array,
+                         uint16_t *const size)
 {
   uint16_t left_to_end;
   uint16_t elems_count = fifo->size - fifo->free_elems;
-  int16_t *array = malloc(elems_count * sizeof(int16_t));  
+  if (size != NULL) {
+    if (elems_count > *size) {
+      return 1;
+    }
+  }
+  
   if (fifo == NULL) {
     if (size != NULL)
       *size = 0;
-    return NULL;
+    return 1;
   }
 
   left_to_end = fifo->size - fifo->index_first;
@@ -127,7 +134,7 @@ int16_t *fifo_int16_get_array(fifo_int16_t *fifo, uint16_t *size)
   if (size != NULL)
     *size = elems_count;
 
-  return array;
+  return 0;
 }
 
 //it is assumed in this function that no overwrite happens,

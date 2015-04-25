@@ -22,8 +22,9 @@ int16_t fifo_int16_pop(fifo_int16_t *fifo);
 inline int fifo_int16_is_full(fifo_int16_t *fifo);
 inline int fifo_int16_is_empty(fifo_int16_t *fifo);
 int fifo_int16_reset(fifo_int16_t *fifo);
-int16_t *fifo_int16_get_array(fifo_int16_t *fifo, uint16_t *size);
-
+int fifo_int16_get_array(const fifo_int16_t *const fifo,
+                         int16_t *const array,
+                         uint16_t *const size);
 static inline void fifo_int16_increase_elems_count(fifo_int16_t *fifo,
                                                    uint16_t value_added);
 static inline void fifo_int16_decrease_elems_count(fifo_int16_t *fifo,
