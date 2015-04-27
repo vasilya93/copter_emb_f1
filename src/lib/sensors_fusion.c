@@ -155,7 +155,7 @@ void perform_fusion()
     new_pos_handler(m_roll, m_pitch, m_yaw_gyro);
   }
   
-  helper_pulse();
+  //helper_pulse();
 }
 
 static void calculate_acc_angles(void)

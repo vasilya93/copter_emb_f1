@@ -9,7 +9,18 @@
 #define SENSFUS_MSG_ACC_INSIDE 51
 #define SENSFUS_MSG_GYRO_INSIDE 52
 
+#ifdef SETTINGS_MPU6050_ACCRANGE_2G
 #define SENSFUS_ACC_UNIT 16384
+#endif
+#ifdef SETTINGS_MPU6050_ACCRANGE_4G
+#define SENSFUS_ACC_UNIT 8192
+#endif
+#ifdef SETTINGS_MPU6050_ACCRANGE_8G
+#define SENSFUS_ACC_UNIT 4096
+#endif
+#ifdef SETTINGS_MPU6050_ACCRANGE_16G
+#define SENSFUS_ACC_UNIT 2048
+#endif
 
 #define SENSFUS_ACC_RENEWED 0x01
 #define SENSFUS_GYRO_RENEWED 0x02
@@ -19,12 +30,12 @@
 
 #define DT (0.005f)
 
-#define Q1 (5.0f)
-#define Q2 (100.0f)
+#define Q1 (0.3f)
+#define Q2 (1.0f)
 #define Q3 (0.01f)
 
-#define R1 (1000.0f)
-#define R2 (1000.0f)
+#define R1 (500.0f)
+#define R2 (5.0f)
 
 //calibration details
 static int16_t gyrox_offset = 0;

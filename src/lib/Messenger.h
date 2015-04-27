@@ -41,6 +41,12 @@
 #define MSNR_DD_SENSFUS_ROLL 0x7C
 #define MSNR_DD_SENSFUS_PITCH 0x80
 #define MSNR_DD_SENSFUS_YAW 0x84
+#define MSNR_DD_CONTROLLER_IMPROLL 0x88
+#define MSNR_DD_CONTROLLER_IMPPITCH 0x8C
+
+#define MSNR_DDIN_STARTOP 0x01
+#define MSNR_DDIN_PWM 0x02
+#define MSNR_DDIN_INTCOEF 0x03
 
 #define MSNR_STARTOP_PATTERN "start"
 
@@ -64,4 +70,7 @@ void Messenger_SendFloat(float value, uint8_t data_descr);
 
 static void messenger_parse_packet(uint8_t *packet);
 static void byte_received_handler(uint8_t rec_byte);
+
+static void on_pwm_value_received(uint16_t pwm_value);
+static void on_intcoef_received(float value);
 #endif

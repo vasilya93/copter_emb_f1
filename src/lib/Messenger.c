@@ -5,6 +5,7 @@
 #include "Serial.h"
 #include "PWM.h"
 #include "settings.h"
+#include "controller.h"
 
 #define MSNR_SIZE_MESSAGE 5
 #define MSNR_STAT_STARTED 0x01
@@ -112,16 +113,39 @@ void byte_received_handler(uint8_t rec_byte)
   } else if (!strncmp((char *)packet, MSNR_STARTOP_PATTERN, MSNR_SIZE_MESSAGE)){
     fifo_reset(&fifo_received);
     msgr_state |= MSNR_STAT_STARTED;
-    start_op_callback();
   }
   free(packet);
 }
 
 static void messenger_parse_packet(uint8_t *packet)
 {
-  uint16_t *p_value = (uint16_t *)(packet + 3);
-  callback_pwm(PWM_CHANNEL1, *p_value);
-  callback_pwm(PWM_CHANNEL2, *p_value);
-  callback_pwm(PWM_CHANNEL3, *p_value);
-  callback_pwm(PWM_CHANNEL4, *p_value); //350 - 1140
+  switch (packet[0]) {
+  case MSNR_DDIN_PWM: {
+    uint16_t *p_value = (uint16_t *)(packet + 3);
+    on_pwm_value_received(*p_value);
+    break;
+  }
+  case MSNR_DDIN_STARTOP: {
+    start_op_callback();
+    break;
+  }
+#ifdef SETTINGS_CONTROLLER_USE_INTEGRAL
+  case MSNR_DDIN_INTCOEF: {
+    float *p_value = (float *)(packet + 1);
+    controller_set_int_coef(*p_value);
+    break;
+  }
+#endif
+  default:
+    break;
+  }
+}
+
+static void on_pwm_value_received(uint16_t pwm_value)
+{
+  (void) pwm_value;
+  callback_pwm(PWM_CHANNEL1, pwm_value);
+  callback_pwm(PWM_CHANNEL2, pwm_value);
+  callback_pwm(PWM_CHANNEL3, pwm_value);
+  callback_pwm(PWM_CHANNEL4, pwm_value); //350 - 1140
 }

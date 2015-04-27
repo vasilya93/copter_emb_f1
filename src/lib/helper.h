@@ -11,4 +11,6 @@ static void helper_pulse_off(void);
 inline float helper_rad_to_deg(float angle);
 inline float helper_deg_to_rad(float angle);
 
+float helper_array_sum(float *array, uint16_t size);
+
 #endif /*HELPER_H*/

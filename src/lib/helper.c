@@ -32,3 +32,13 @@ float helper_deg_to_rad(float angle)
 {
   return angle / 180.0 * M_PI;
 }
+
+float helper_array_sum(float *array, uint16_t size)
+{
+  float sum = 0;
+  for (int i = 0; i < size; i++) {
+    sum += array[i];
+  }
+
+  return sum;
+}
